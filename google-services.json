@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "824387320753",
+    "project_id": "fcm2-fcbf6",
+    "storage_bucket": "fcm2-fcbf6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824387320753:android:ef74c12deffb68e8a61b90",
+        "android_client_info": {
+          "package_name": "com.nmaniam90.fcm2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824387320753-i7o6hnpbd9kkqegj2jlm8cvc9vn9m168.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nmaniam90.fcm2",
+            "certificate_hash": "a5f079a762c17025e2c4e2d59abcf8575369b979"
+          }
+        },
+        {
+          "client_id": "824387320753-taasj0orgv496ngtj6t5qk5bb6ehb5c5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nmaniam90.fcm2",
+            "certificate_hash": "c494667a2b0337afcbae787cd8129c7e664166c9"
+          }
+        },
+        {
+          "client_id": "824387320753-tl0itqqv1gd1h7deh4it8mmn84qkt6rl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nmaniam90.fcm2",
+            "certificate_hash": "92f313a375d56c5ee17e3b9574e0ea3b56a3e0c8"
+          }
+        },
+        {
+          "client_id": "824387320753-kenl93uen179jdtkv5n4mr8r74fvmimm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhljhoGSB5iSFZvfzWavhansr0ZQ-vfPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824387320753-kenl93uen179jdtkv5n4mr8r74fvmimm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
