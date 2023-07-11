@@ -56,7 +56,7 @@ const ChatListItem = ({ chat, sub }) => {
 
   return (
     <Pressable
-      onPress={() => ('Chat', { id: chatRoom?.id, name: chatRoom?.Property.title })}
+      onPress={() => navigation.navigate('Chat', { id: chatRoom?.id, name: chatRoom?.Property.title })}
       style={styles.container}
     >
        <MaterialCommunityIcons style={styles.image} name="head-dots-horizontal-outline" size={40} color="grey" />

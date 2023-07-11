@@ -7,7 +7,7 @@ import * as Notifications from 'expo-notifications';
 import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 import { startActivityAsync, ActivityAction } from 'expo-intent-launcher';
-
+import * as RootNavigation from '../navigation/RootNavigation'
 
 const AuthContext = createContext({});
 
@@ -18,6 +18,7 @@ const AuthContextProvider = ({children}) => {
     const [newToken, setNewToken] = useState(null);
     const sub = authUser?.attributes?.sub;
     const firebaseMessaging = messaging;
+    const navigation = RootNavigation;
 
 
     useEffect(()=>{
@@ -36,7 +37,8 @@ const AuthContextProvider = ({children}) => {
             'Notification caused app to open from quit state:',
             remoteMessage.notification,
           );
-        }
+        
+           }
      
       });
   
@@ -45,7 +47,9 @@ const AuthContextProvider = ({children}) => {
         console.log(
           'Notification caused app to open from background state:',
           remoteMessage.notification,
-        );
+          navigation.navigate('Chat', { id: remoteMessage.data.chatRoomID, name: remoteMessage.data.propertyTitle })
+       
+          );
        
       });
   

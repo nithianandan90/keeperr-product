@@ -18,6 +18,7 @@ import TaskEdit from '../screens/TaskEdit';
 import GridScreen from '../screens/ImageScreen';
 import PropertyEdit from '../screens/PropertyEdit';
 import PropertyUserScreen from '../screens/PropertyUser';
+import { navigationRef } from './RootNavigation';
 
 
 const Stack = createNativeStackNavigator();
@@ -42,7 +43,7 @@ const Navigator = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
        
       
       <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: 'whitesmoke' } }}>

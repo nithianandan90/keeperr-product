@@ -191,10 +191,26 @@ const InputBox = ({chatroom}) => {
 
       const chatRoomUsers = chatRoomData.data.updateChatRoom.users.items;
 
+      const propertyData = chatRoomData.data.updateChatRoom.Property;
+      console.log('chatroomdata',JSON.stringify(propertyData, null, 2))
+
+
+      const notificationData = {
+        notification: {
+          title: propertyData.title,
+          body: text
+        },
+        data: {
+          chatRoomID: chatRoomData.data.updateChatRoom.id
+        }
+      };
+
+      
+
       chatRoomUsers.map((item)=>{
         if(item.user.id!==authuser.attributes.sub){
           const token = item.user.firebaseToken;
-          sendNotificationToDevice(deviceId=token, title='New Message', body=text);
+          sendNotificationToDevice(deviceId=token, notificationData);
         }
       })
 
