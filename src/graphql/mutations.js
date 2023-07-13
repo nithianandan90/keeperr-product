@@ -126,6 +126,7 @@ export const createProperties = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -211,6 +212,7 @@ export const updateProperties = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -296,6 +298,7 @@ export const deleteProperties = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -348,6 +351,7 @@ export const createTask = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -416,6 +420,7 @@ export const updateTask = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -484,6 +489,7 @@ export const deleteTask = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -538,6 +544,7 @@ export const createAttachment = /* GraphQL */ `
       chatroomID
       taskID
       propertiesID
+      invoiceID
       updatedAt
       _version
       _deleted
@@ -564,6 +571,7 @@ export const updateAttachment = /* GraphQL */ `
       chatroomID
       taskID
       propertiesID
+      invoiceID
       updatedAt
       _version
       _deleted
@@ -590,6 +598,7 @@ export const deleteAttachment = /* GraphQL */ `
       chatroomID
       taskID
       propertiesID
+      invoiceID
       updatedAt
       _version
       _deleted
@@ -650,6 +659,8 @@ export const createChatRoom = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -657,7 +668,6 @@ export const createChatRoom = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -726,6 +736,7 @@ export const createChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -765,6 +776,7 @@ export const createChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -795,6 +807,7 @@ export const createChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -868,6 +881,8 @@ export const updateChatRoom = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -875,7 +890,6 @@ export const updateChatRoom = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -944,6 +958,7 @@ export const updateChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -983,6 +998,7 @@ export const updateChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -1013,6 +1029,7 @@ export const updateChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -1086,6 +1103,8 @@ export const deleteChatRoom = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -1093,7 +1112,6 @@ export const deleteChatRoom = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1162,6 +1180,7 @@ export const deleteChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -1201,6 +1220,7 @@ export const deleteChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -1231,6 +1251,7 @@ export const deleteChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -1278,6 +1299,7 @@ export const createMessage = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -1322,6 +1344,7 @@ export const updateMessage = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -1366,6 +1389,7 @@ export const deleteMessage = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -1391,6 +1415,8 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       id
+      createdAt
+      clientID
       name
       username
       email
@@ -1409,6 +1435,7 @@ export const createUser = /* GraphQL */ `
         chatroomID
         taskID
         propertiesID
+        invoiceID
         updatedAt
         _version
         _deleted
@@ -1436,6 +1463,8 @@ export const createUser = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -1443,7 +1472,6 @@ export const createUser = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1550,7 +1578,31 @@ export const createUser = /* GraphQL */ `
         startedAt
         __typename
       }
-      createdAt
+      Invoices {
+        items {
+          id
+          title
+          createdAt
+          invoiceNo
+          invoiceAmount
+          tasks
+          status
+          Attachments {
+            nextToken
+            startedAt
+            __typename
+          }
+          usersID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
       updatedAt
       _version
       _deleted
@@ -1567,6 +1619,8 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       id
+      createdAt
+      clientID
       name
       username
       email
@@ -1585,6 +1639,7 @@ export const updateUser = /* GraphQL */ `
         chatroomID
         taskID
         propertiesID
+        invoiceID
         updatedAt
         _version
         _deleted
@@ -1612,6 +1667,8 @@ export const updateUser = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -1619,7 +1676,6 @@ export const updateUser = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1726,7 +1782,31 @@ export const updateUser = /* GraphQL */ `
         startedAt
         __typename
       }
-      createdAt
+      Invoices {
+        items {
+          id
+          title
+          createdAt
+          invoiceNo
+          invoiceAmount
+          tasks
+          status
+          Attachments {
+            nextToken
+            startedAt
+            __typename
+          }
+          usersID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
       updatedAt
       _version
       _deleted
@@ -1743,6 +1823,8 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       id
+      createdAt
+      clientID
       name
       username
       email
@@ -1761,6 +1843,7 @@ export const deleteUser = /* GraphQL */ `
         chatroomID
         taskID
         propertiesID
+        invoiceID
         updatedAt
         _version
         _deleted
@@ -1788,6 +1871,8 @@ export const deleteUser = /* GraphQL */ `
           }
           user {
             id
+            createdAt
+            clientID
             name
             username
             email
@@ -1795,7 +1880,6 @@ export const deleteUser = /* GraphQL */ `
             status
             firebaseToken
             userType
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1902,12 +1986,177 @@ export const deleteUser = /* GraphQL */ `
         startedAt
         __typename
       }
-      createdAt
+      Invoices {
+        items {
+          id
+          title
+          createdAt
+          invoiceNo
+          invoiceAmount
+          tasks
+          status
+          Attachments {
+            nextToken
+            startedAt
+            __typename
+          }
+          usersID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
       updatedAt
       _version
       _deleted
       _lastChangedAt
       userImageId
+      __typename
+    }
+  }
+`;
+export const createInvoices = /* GraphQL */ `
+  mutation CreateInvoices(
+    $input: CreateInvoicesInput!
+    $condition: ModelInvoicesConditionInput
+  ) {
+    createInvoices(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      invoiceNo
+      invoiceAmount
+      tasks
+      status
+      Attachments {
+        items {
+          id
+          storageKey
+          fileName
+          createdAt
+          type
+          width
+          height
+          duration
+          messageID
+          chatroomID
+          taskID
+          propertiesID
+          invoiceID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      usersID
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateInvoices = /* GraphQL */ `
+  mutation UpdateInvoices(
+    $input: UpdateInvoicesInput!
+    $condition: ModelInvoicesConditionInput
+  ) {
+    updateInvoices(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      invoiceNo
+      invoiceAmount
+      tasks
+      status
+      Attachments {
+        items {
+          id
+          storageKey
+          fileName
+          createdAt
+          type
+          width
+          height
+          duration
+          messageID
+          chatroomID
+          taskID
+          propertiesID
+          invoiceID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      usersID
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteInvoices = /* GraphQL */ `
+  mutation DeleteInvoices(
+    $input: DeleteInvoicesInput!
+    $condition: ModelInvoicesConditionInput
+  ) {
+    deleteInvoices(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      invoiceNo
+      invoiceAmount
+      tasks
+      status
+      Attachments {
+        items {
+          id
+          storageKey
+          fileName
+          createdAt
+          type
+          width
+          height
+          duration
+          messageID
+          chatroomID
+          taskID
+          propertiesID
+          invoiceID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      usersID
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -2021,6 +2270,7 @@ export const createUserChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -2042,6 +2292,8 @@ export const createUserChatRoom = /* GraphQL */ `
       }
       user {
         id
+        createdAt
+        clientID
         name
         username
         email
@@ -2060,6 +2312,7 @@ export const createUserChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -2151,7 +2404,26 @@ export const createUserChatRoom = /* GraphQL */ `
           startedAt
           __typename
         }
-        createdAt
+        Invoices {
+          items {
+            id
+            title
+            createdAt
+            invoiceNo
+            invoiceAmount
+            tasks
+            status
+            usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            __typename
+          }
+          nextToken
+          startedAt
+          __typename
+        }
         updatedAt
         _version
         _deleted
@@ -2277,6 +2549,7 @@ export const updateUserChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -2298,6 +2571,8 @@ export const updateUserChatRoom = /* GraphQL */ `
       }
       user {
         id
+        createdAt
+        clientID
         name
         username
         email
@@ -2316,6 +2591,7 @@ export const updateUserChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -2407,7 +2683,26 @@ export const updateUserChatRoom = /* GraphQL */ `
           startedAt
           __typename
         }
-        createdAt
+        Invoices {
+          items {
+            id
+            title
+            createdAt
+            invoiceNo
+            invoiceAmount
+            tasks
+            status
+            usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            __typename
+          }
+          nextToken
+          startedAt
+          __typename
+        }
         updatedAt
         _version
         _deleted
@@ -2533,6 +2828,7 @@ export const deleteUserChatRoom = /* GraphQL */ `
             chatroomID
             taskID
             propertiesID
+            invoiceID
             updatedAt
             _version
             _deleted
@@ -2554,6 +2850,8 @@ export const deleteUserChatRoom = /* GraphQL */ `
       }
       user {
         id
+        createdAt
+        clientID
         name
         username
         email
@@ -2572,6 +2870,7 @@ export const deleteUserChatRoom = /* GraphQL */ `
           chatroomID
           taskID
           propertiesID
+          invoiceID
           updatedAt
           _version
           _deleted
@@ -2663,7 +2962,26 @@ export const deleteUserChatRoom = /* GraphQL */ `
           startedAt
           __typename
         }
-        createdAt
+        Invoices {
+          items {
+            id
+            title
+            createdAt
+            invoiceNo
+            invoiceAmount
+            tasks
+            status
+            usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            __typename
+          }
+          nextToken
+          startedAt
+          __typename
+        }
         updatedAt
         _version
         _deleted

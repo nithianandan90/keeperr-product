@@ -1,8 +1,14 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChatsScreen from '../screens/ChatsScreen/ChatsScreen';
-import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import ChatsScreen from "../screens/ChatsScreen/ChatsScreen";
+import {
+  Ionicons,
+  Entypo,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
+import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import UsersScreen from "../screens/UsersScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -11,23 +17,24 @@ const MainTabNavigatorAdmin = () => {
     <Tab.Navigator
       initialRouteName="Chats"
       screenOptions={{
-        tabBarActiveTintColor:'black',
-        tabBarStyle: { backgroundColor: 'whitesmoke' },
-        headerStyle: { backgroundColor: 'whitesmoke' },
+        tabBarActiveTintColor: "black",
+        tabBarStyle: { backgroundColor: "whitesmoke" },
+        headerStyle: { backgroundColor: "whitesmoke" },
       }}
     >
-     
       <Tab.Screen
         name="Properties"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="office-building-marker" size={24} color={color} />
+            <MaterialCommunityIcons
+              name="office-building-marker"
+              size={24}
+              color={color}
+            />
           ),
         }}
-        
       />
-
 
       <Tab.Screen
         name="Chats"
@@ -46,6 +53,15 @@ const MainTabNavigatorAdmin = () => {
           //   />
           // ),
         })}
+      />
+      <Tab.Screen
+        name="UserScreen"
+        component={UsersScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="users" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Settings"

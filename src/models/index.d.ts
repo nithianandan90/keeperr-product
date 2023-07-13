@@ -14,6 +14,12 @@ export enum AttachmentType {
   DOCUMENT = "DOCUMENT"
 }
 
+export enum InvoiceStatus {
+  PAID = "PAID",
+  UNPAID = "UNPAID",
+  OVERDUE = "OVERDUE"
+}
+
 
 
 type EagerNotifications = {
@@ -169,6 +175,7 @@ type EagerAttachment = {
   readonly chatroomID?: string | null;
   readonly taskID?: string | null;
   readonly propertiesID?: string | null;
+  readonly invoiceID?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -189,6 +196,7 @@ type LazyAttachment = {
   readonly chatroomID?: string | null;
   readonly taskID?: string | null;
   readonly propertiesID?: string | null;
+  readonly invoiceID?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -281,9 +289,11 @@ export declare const Message: (new (init: ModelInit<Message>) => Message) & {
 type EagerUser = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
+  readonly clientID?: string | null;
   readonly name?: string | null;
   readonly username?: string | null;
   readonly email?: string | null;
@@ -296,7 +306,7 @@ type EagerUser = {
   readonly Tasks?: (Task | null)[] | null;
   readonly Notifications?: (Notifications | null)[] | null;
   readonly Properties?: (Properties | null)[] | null;
-  readonly createdAt?: string | null;
+  readonly Invoices?: (Invoices | null)[] | null;
   readonly updatedAt?: string | null;
   readonly userImageId?: string | null;
 }
@@ -304,9 +314,11 @@ type EagerUser = {
 type LazyUser = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
+  readonly createdAt: string;
+  readonly clientID?: string | null;
   readonly name?: string | null;
   readonly username?: string | null;
   readonly email?: string | null;
@@ -319,7 +331,7 @@ type LazyUser = {
   readonly Tasks: AsyncCollection<Task>;
   readonly Notifications: AsyncCollection<Notifications>;
   readonly Properties: AsyncCollection<Properties>;
-  readonly createdAt?: string | null;
+  readonly Invoices: AsyncCollection<Invoices>;
   readonly updatedAt?: string | null;
   readonly userImageId?: string | null;
 }
@@ -328,6 +340,46 @@ export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser :
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
+
+type EagerInvoices = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Invoices, 'id'>;
+    readOnlyFields: 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly createdAt: string;
+  readonly invoiceNo: string;
+  readonly invoiceAmount: string;
+  readonly tasks?: string | null;
+  readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
+  readonly Attachments?: (Attachment | null)[] | null;
+  readonly usersID?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyInvoices = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Invoices, 'id'>;
+    readOnlyFields: 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly createdAt: string;
+  readonly invoiceNo: string;
+  readonly invoiceAmount: string;
+  readonly tasks?: string | null;
+  readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
+  readonly Attachments: AsyncCollection<Attachment>;
+  readonly usersID?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Invoices = LazyLoading extends LazyLoadingDisabled ? EagerInvoices : LazyInvoices
+
+export declare const Invoices: (new (init: ModelInit<Invoices>) => Invoices) & {
+  copyOf(source: Invoices, mutator: (draft: MutableModel<Invoices>) => MutableModel<Invoices> | void): Invoices;
 }
 
 type EagerUserChatRoom = {

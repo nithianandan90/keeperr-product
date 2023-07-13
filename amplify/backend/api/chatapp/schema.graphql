@@ -1,4 +1,3 @@
-
 enum UserType {
   CLIENT
   PARTNER
@@ -11,18 +10,32 @@ enum AttachmentType {
   DOCUMENT
 }
 
+enum InvoiceStatus {
+  PAID
+  UNPAID
+  OVERDUE
+}
 
-type Notifications @model @auth(rules: [{allow: public}]) {
+type Notifications @model @auth(rules: [{ allow: public }]) {
   id: ID!
   updateDetails: String!
   opened: Boolean
   createdAt: AWSDateTime!
-  usersID: ID @index(name: "byUser", sortKeyFields: ["createdAt"], queryField: "listNotificationsByUser")
-  taskID: ID @index(name: "byTask", sortKeyFields: ["createdAt"], queryField: "listNotificationsByTask")
+  usersID: ID
+    @index(
+      name: "byUser"
+      sortKeyFields: ["createdAt"]
+      queryField: "listNotificationsByUser"
+    )
+  taskID: ID
+    @index(
+      name: "byTask"
+      sortKeyFields: ["createdAt"]
+      queryField: "listNotificationsByTask"
+    )
 }
 
-
-type Properties @model @auth(rules: [{allow: public}]) {
+type Properties @model @auth(rules: [{ allow: public }]) {
   id: ID!
   title: String!
   streetAddress: String!
@@ -39,8 +52,7 @@ type Properties @model @auth(rules: [{allow: public}]) {
   usersID: ID @index(name: "byUser")
 }
 
-
-type Task @model @auth(rules: [{allow: public}]) {
+type Task @model @auth(rules: [{ allow: public }]) {
   id: ID!
   status: String!
   startDate: AWSDateTime
@@ -51,15 +63,18 @@ type Task @model @auth(rules: [{allow: public}]) {
   taskType: String!
   recurrence: String!
   active: Boolean
-  propertiesID: ID! @index(name: "byProperties", sortKeyFields: ["createdAt"], queryField: "listTasksByProperty")
+  propertiesID: ID!
+    @index(
+      name: "byProperties"
+      sortKeyFields: ["createdAt"]
+      queryField: "listTasksByProperty"
+    )
   usersID: ID @index(name: "byUser")
   Attachments: [Attachment] @hasMany(indexName: "byTask", fields: ["id"])
   Notifications: [Notifications] @hasMany(indexName: "byTask", fields: ["id"])
 }
 
-
-
-type Attachment @model @auth(rules: [{allow: public}]) {
+type Attachment @model @auth(rules: [{ allow: public }]) {
   id: ID!
   storageKey: String
   fileName: String
@@ -70,11 +85,17 @@ type Attachment @model @auth(rules: [{allow: public}]) {
   duration: Int
   messageID: ID @index(name: "byMessage")
   chatroomID: ID @index(name: "byChatRoom")
-  taskID: ID @index(name: "byTask", sortKeyFields: ["createdAt"], queryField: "listAttachmentsByTask")
+  taskID: ID
+    @index(
+      name: "byTask"
+      sortKeyFields: ["createdAt"]
+      queryField: "listAttachmentsByTask"
+    )
   propertiesID: ID @index(name: "byProperties")
+  invoiceID: ID @index(name: "byInvoices")
 }
 
-type ChatRoom @model @auth(rules: [{allow: public}]) {
+type ChatRoom @model @auth(rules: [{ allow: public }]) {
   id: ID!
   name: String
   image: String
@@ -85,18 +106,25 @@ type ChatRoom @model @auth(rules: [{allow: public}]) {
   Attachments: [Attachment] @hasMany(indexName: "byChatRoom", fields: ["id"])
 }
 
-type Message @model @auth(rules: [{allow: public}]) {
+type Message @model @auth(rules: [{ allow: public }]) {
   id: ID!
   createdAt: AWSDateTime!
   text: String
-  chatroomID: ID! @index(name: "byChatRoom", sortKeyFields: ["createdAt"], queryField: "listMessagesByChatRoom")
+  chatroomID: ID!
+    @index(
+      name: "byChatRoom"
+      sortKeyFields: ["createdAt"]
+      queryField: "listMessagesByChatRoom"
+    )
   userID: ID! @index(name: "byUser")
   images: [String]
   Attachments: [Attachment] @hasMany(indexName: "byMessage", fields: ["id"])
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type User @model @auth(rules: [{ allow: public }]) {
   id: ID!
+  createdAt: AWSDateTime!
+  clientID: String
   name: String
   username: String
   email: AWSEmail
@@ -106,9 +134,25 @@ type User @model @auth(rules: [{allow: public}]) {
   firebaseToken: String
   ChatRooms: [ChatRoom] @manyToMany(relationName: "UserChatRoom")
   userType: UserType
+    @index(
+      name: "usersByDate"
+      sortKeyFields: ["createdAt"]
+      queryField: "listUsersByDate"
+    )
   Tasks: [Task] @hasMany(indexName: "byUser", fields: ["id"])
   Notifications: [Notifications] @hasMany(indexName: "byUser", fields: ["id"])
   Properties: [Properties] @hasMany(indexName: "byUser", fields: ["id"])
+  Invoices: [Invoices] @hasMany(indexName: "byUser", fields: ["id"])
 }
- 
 
+type Invoices @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  title: String!
+  createdAt: AWSDateTime!
+  invoiceNo: String!
+  invoiceAmount: String!
+  tasks: AWSJSON
+  status: InvoiceStatus
+  Attachments: [Attachment] @hasMany(indexName: "byInvoices", fields: ["id"])
+  usersID: ID @index(name: "byUser")
+}

@@ -59,7 +59,7 @@ const InputBox = ({chatroom}) => {
       type: "application/*"
     });
 
-    console.log("result",result);
+   
 
     // No permissions request is necessary for launching the image library
     // let result = await ImagePicker.launchImageLibraryAsync({
@@ -69,14 +69,19 @@ const InputBox = ({chatroom}) => {
     // });
 
 
-    if (!result.type==='cancel') {
+  
+    
+    if (result.type !=='cancel') {
+      
       if(result.selected){
         //user selected multi
         setFiles(result.selected);
       }else{
+        console.log('document result', result);
         setFiles([result]);
       }
     }
+    
   };
 
 
@@ -144,7 +149,6 @@ const InputBox = ({chatroom}) => {
   const onSend  = async () => {
     
     
-
     if(text || files.length>0){
       // console.warn('Sending a new message: ', files);
       setDisableSend(true);

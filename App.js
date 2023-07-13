@@ -1,41 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import Navigator from './src/navigation';
-import {Amplify, Auth, API, graphqlOperation} from 'aws-amplify';
-import { withAuthenticator, AmplifyTheme } from 'aws-amplify-react-native';
-import awsconfig from './src/aws-exports'; 
-import AuthContextProvider from './src/context/AuthContext';
-import CustomSignIn from './src/components/CustomSignIn';
-
-
+import { StatusBar } from "expo-status-bar";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import Navigator from "./src/navigation";
+import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
+import { withAuthenticator, AmplifyTheme } from "aws-amplify-react-native";
+import awsconfig from "./src/aws-exports";
+import AuthContextProvider from "./src/context/AuthContext";
 
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
 const myFederatedConfig = {
-  googleClientId: '824387320753-gdoj2puke3sgn476i8l2ojnvcm486q88.apps.googleusercontent.com',
+  googleClientId:
+    "824387320753-gdoj2puke3sgn476i8l2ojnvcm486q88.apps.googleusercontent.com",
 };
 
- function App() {
-  
- 
+function App() {
+  useEffect(() => {}, []);
 
-
-  useEffect(()=>{
-
-
-
-  },[])
-  
   return (
-
     <AuthContextProvider>
-    <View style={styles.container}>
-      <Navigator />
+      <View style={styles.container}>
+        <Navigator />
 
-    
-      <StatusBar style="auto" />
-    </View>
+        <StatusBar style="auto" />
+      </View>
     </AuthContextProvider>
 
     // <View style={styles.container}>
@@ -46,8 +34,6 @@ const myFederatedConfig = {
     // </View>
   );
 }
-
-
 
 const signUpConfig = {
   header: "Sign Up",
@@ -84,41 +70,43 @@ const signUpConfig = {
   ],
 };
 
-const customStyles = {...AmplifyTheme, 
+const customStyles = {
+  ...AmplifyTheme,
   button: {
-		backgroundColor: '#512da8',
-		alignItems: 'center',
-		padding: 16,
-	},
+    backgroundColor: "#512da8",
+    alignItems: "center",
+    padding: 16,
+  },
   sectionFooterLink: {
-		fontSize: 14,
-		color: 'black',
-		alignItems: 'baseline',
-		textAlign: 'center',
-	},
+    fontSize: 14,
+    color: "black",
+    alignItems: "baseline",
+    textAlign: "center",
+  },
   buttonDisabled: {
-		backgroundColor: '#cccccc',
-		alignItems: 'center',
-		padding: 16,
-	},
+    backgroundColor: "#cccccc",
+    alignItems: "center",
+    padding: 16,
+  },
 
   sectionFooterLinkDisabled: {
-		fontSize: 14,
-		color: '#8c8c8c',
-		alignItems: 'baseline',
-		textAlign: 'center',
-	},
+    fontSize: 14,
+    color: "#8c8c8c",
+    alignItems: "baseline",
+    textAlign: "center",
+  },
+};
 
-}
-
-export default withAuthenticator(App, {signUpConfig, theme: customStyles, usernameAttributes: 'email' });
-
-
+export default withAuthenticator(App, {
+  signUpConfig,
+  theme: customStyles,
+  usernameAttributes: "email",
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'whitesmoke',
-    justifyContent: 'center',
+    backgroundColor: "whitesmoke",
+    justifyContent: "center",
   },
 });

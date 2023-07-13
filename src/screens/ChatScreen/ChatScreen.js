@@ -30,7 +30,6 @@ const ChatScreen = () => {
     API.graphql(graphqlOperation(
       listUsers, {filter:{userType:{eq:'MANAGER'}}}
     )).then((result)=>{
-      console.log('results', result.data?.listUsers.items[0].id);
       setManagerIDs(result.data?.listUsers.items)
     })
 

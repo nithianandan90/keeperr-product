@@ -14,7 +14,13 @@ const AttachmentType = {
   "DOCUMENT": "DOCUMENT"
 };
 
-const { Notifications, Properties, Task, Attachment, ChatRoom, Message, User, UserChatRoom } = initSchema(schema);
+const InvoiceStatus = {
+  "PAID": "PAID",
+  "UNPAID": "UNPAID",
+  "OVERDUE": "OVERDUE"
+};
+
+const { Notifications, Properties, Task, Attachment, ChatRoom, Message, User, Invoices, UserChatRoom } = initSchema(schema);
 
 export {
   Notifications,
@@ -24,7 +30,9 @@ export {
   ChatRoom,
   Message,
   User,
+  Invoices,
   UserChatRoom,
   UserType,
-  AttachmentType
+  AttachmentType,
+  InvoiceStatus
 };

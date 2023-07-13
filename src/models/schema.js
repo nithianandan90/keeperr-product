@@ -533,6 +533,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "invoiceID": {
+                    "name": "invoiceID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
@@ -584,6 +591,15 @@ export const schema = {
                         "name": "byProperties",
                         "fields": [
                             "propertiesID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byInvoices",
+                        "fields": [
+                            "invoiceID"
                         ]
                     }
                 },
@@ -895,6 +911,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "clientID": {
+                    "name": "clientID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "name": {
                     "name": "name",
                     "isArray": false,
@@ -1028,13 +1058,21 @@ export const schema = {
                         ]
                     }
                 },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
+                "Invoices": {
+                    "name": "Invoices",
+                    "isArray": true,
+                    "type": {
+                        "model": "Invoices"
+                    },
                     "isRequired": false,
                     "attributes": [],
-                    "isReadOnly": true
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "usersID"
+                        ]
+                    }
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -1058,6 +1096,137 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "usersByDate",
+                        "queryField": "listUsersByDate",
+                        "fields": [
+                            "userType",
+                            "createdAt"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Invoices": {
+            "name": "Invoices",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "invoiceNo": {
+                    "name": "invoiceNo",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "invoiceAmount": {
+                    "name": "invoiceAmount",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tasks": {
+                    "name": "tasks",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "InvoiceStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Attachments": {
+                    "name": "Attachments",
+                    "isArray": true,
+                    "type": {
+                        "model": "Attachment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "invoiceID"
+                        ]
+                    }
+                },
+                "usersID": {
+                    "name": "usersID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Invoices",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "usersID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -1192,9 +1361,17 @@ export const schema = {
                 "VIDEO",
                 "DOCUMENT"
             ]
+        },
+        "InvoiceStatus": {
+            "name": "InvoiceStatus",
+            "values": [
+                "PAID",
+                "UNPAID",
+                "OVERDUE"
+            ]
         }
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f5a4c8a7faaa4d0c2885333e36889600"
+    "version": "89767a5c66491064286398d166039ebd"
 };
