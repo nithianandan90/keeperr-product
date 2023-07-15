@@ -3,9 +3,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { listInvoices } from "../../graphql/queries";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { List } from "react-native-paper";
 import { ActivityIndicator } from "react-native";
+import { useAuthContext } from "../../context/AuthContext";
+import { dateTimeFormatter } from "../../services/datetimeFormatter";
+import { Alert } from "react-native";
+import { updateInvoices } from "../../graphql/mutations";
+import { AntDesign } from "@expo/vector-icons";
 
 const InvoicesScreen = () => {
   const [invoices, setInvoices] = useState();
@@ -13,10 +18,33 @@ const InvoicesScreen = () => {
 
   const route = useRoute();
 
+  const navigation = useNavigation();
+
   const userID = route.params.userID;
+
+  const { dbUser } = useAuthContext();
+
+  const admin = ["MANAGER", "PARTNER"];
+
+  const adminChecker = admin.some((k) => k === dbUser?.userType);
 
   useEffect(() => {
     getInvoices();
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <AntDesign
+            onPress={() => {
+              navigation.navigate("Create Invoice", { userID: userID });
+            }}
+            name="plus"
+            size={24}
+            color="gray"
+            style={{ marginRight: 10 }}
+          />
+        </View>
+      ),
+    });
   }, []);
 
   const getInvoices = async () => {
@@ -24,7 +52,11 @@ const InvoicesScreen = () => {
 
     const fetchedResults = await API.graphql(
       graphqlOperation(listInvoices, {
-        filter: { usersID: { eq: userID } },
+        filter: {
+          usersID: { eq: userID },
+          active: { ne: false },
+          _deleted: { ne: true },
+        },
       })
     );
 
@@ -40,6 +72,34 @@ const InvoicesScreen = () => {
     //extract the values and the json
   };
 
+  const deleteInvoice = async (item) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to remove this invoice?",
+      [
+        // The "Yes" button
+        {
+          text: "Yes",
+          onPress: async () => {
+            setIsLoading(true);
+            await API.graphql(
+              graphqlOperation(updateInvoices, {
+                input: { id: item.id, active: false, _version: item._version },
+              })
+            );
+            await getInvoices();
+            setIsLoading(false);
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
   const renderInvoices = ({ item }) => {
     if (!item) {
       return;
@@ -51,12 +111,18 @@ const InvoicesScreen = () => {
           <View style={{ padding: 10 }}>
             <List.Item
               title={`${item.title} #${item.invoiceNo}`}
-              description={`Amount: ${item.invoiceAmount}`}
-              left={(props) => <List.Icon {...props} icon="account-cog" />}
+              description={`Amount: RM ${item.invoiceAmount}\n${item.status}`}
+              descriptionNumberOfLines={2}
+              left={(props) => <List.Icon {...props} icon="file-document" />}
               right={(props) => (
-                <Pressable onPress={() => {}}>
-                  <List.Icon {...props} icon="eye" />
-                </Pressable>
+                <View>
+                  {adminChecker && (
+                    <Pressable onPress={() => deleteInvoice(item)}>
+                      <List.Icon {...props} icon="delete" />
+                    </Pressable>
+                  )}
+                  <Text>{dateTimeFormatter(item.createdAt, "dateOnly")}</Text>
+                </View>
               )}
             />
           </View>

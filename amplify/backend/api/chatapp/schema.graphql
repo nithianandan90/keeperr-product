@@ -142,7 +142,7 @@ type User @model @auth(rules: [{ allow: public }]) {
   Tasks: [Task] @hasMany(indexName: "byUser", fields: ["id"])
   Notifications: [Notifications] @hasMany(indexName: "byUser", fields: ["id"])
   Properties: [Properties] @hasMany(indexName: "byUser", fields: ["id"])
-  Invoices: [Invoices] @hasMany(indexName: "byUser", fields: ["id"])
+  Invoices: [Invoices] @hasMany(indexName: "byUserInv", fields: ["id"])
 }
 
 type Invoices @model @auth(rules: [{ allow: public }]) {
@@ -151,8 +151,9 @@ type Invoices @model @auth(rules: [{ allow: public }]) {
   createdAt: AWSDateTime!
   invoiceNo: String!
   invoiceAmount: String!
+  active: Boolean
   tasks: AWSJSON
+  usersID: ID @index(name: "byUserInv")
   status: InvoiceStatus
   Attachments: [Attachment] @hasMany(indexName: "byInvoices", fields: ["id"])
-  usersID: ID @index(name: "byUser")
 }

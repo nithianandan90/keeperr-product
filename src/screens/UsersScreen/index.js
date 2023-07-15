@@ -33,8 +33,10 @@ const UsersScreen = () => {
 
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filtered = users.filter((user) =>
-      user?.email.toLowerCase().includes(text.toLowerCase())
+    const filtered = users.filter(
+      (user) =>
+        user?.email.toLowerCase().includes(text.toLowerCase()) ||
+        user?.id.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredUsers(filtered);
   };

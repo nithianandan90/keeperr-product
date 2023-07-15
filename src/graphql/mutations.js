@@ -1585,14 +1585,15 @@ export const createUser = /* GraphQL */ `
           createdAt
           invoiceNo
           invoiceAmount
+          active
           tasks
+          usersID
           status
           Attachments {
             nextToken
             startedAt
             __typename
           }
-          usersID
           updatedAt
           _version
           _deleted
@@ -1789,14 +1790,15 @@ export const updateUser = /* GraphQL */ `
           createdAt
           invoiceNo
           invoiceAmount
+          active
           tasks
+          usersID
           status
           Attachments {
             nextToken
             startedAt
             __typename
           }
-          usersID
           updatedAt
           _version
           _deleted
@@ -1993,14 +1995,15 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           invoiceNo
           invoiceAmount
+          active
           tasks
+          usersID
           status
           Attachments {
             nextToken
             startedAt
             __typename
           }
-          usersID
           updatedAt
           _version
           _deleted
@@ -2031,7 +2034,9 @@ export const createInvoices = /* GraphQL */ `
       createdAt
       invoiceNo
       invoiceAmount
+      active
       tasks
+      usersID
       status
       Attachments {
         items {
@@ -2058,7 +2063,6 @@ export const createInvoices = /* GraphQL */ `
         startedAt
         __typename
       }
-      usersID
       updatedAt
       _version
       _deleted
@@ -2078,7 +2082,9 @@ export const updateInvoices = /* GraphQL */ `
       createdAt
       invoiceNo
       invoiceAmount
+      active
       tasks
+      usersID
       status
       Attachments {
         items {
@@ -2105,7 +2111,6 @@ export const updateInvoices = /* GraphQL */ `
         startedAt
         __typename
       }
-      usersID
       updatedAt
       _version
       _deleted
@@ -2125,7 +2130,9 @@ export const deleteInvoices = /* GraphQL */ `
       createdAt
       invoiceNo
       invoiceAmount
+      active
       tasks
+      usersID
       status
       Attachments {
         items {
@@ -2152,7 +2159,6 @@ export const deleteInvoices = /* GraphQL */ `
         startedAt
         __typename
       }
-      usersID
       updatedAt
       _version
       _deleted
@@ -2411,9 +2417,10 @@ export const createUserChatRoom = /* GraphQL */ `
             createdAt
             invoiceNo
             invoiceAmount
+            active
             tasks
-            status
             usersID
+            status
             updatedAt
             _version
             _deleted
@@ -2690,9 +2697,10 @@ export const updateUserChatRoom = /* GraphQL */ `
             createdAt
             invoiceNo
             invoiceAmount
+            active
             tasks
-            status
             usersID
+            status
             updatedAt
             _version
             _deleted
@@ -2969,9 +2977,10 @@ export const deleteUserChatRoom = /* GraphQL */ `
             createdAt
             invoiceNo
             invoiceAmount
+            active
             tasks
-            status
             usersID
+            status
             updatedAt
             _version
             _deleted

@@ -1164,10 +1164,24 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "active": {
+                    "name": "active",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "tasks": {
                     "name": "tasks",
                     "isArray": false,
                     "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "usersID": {
+                    "name": "usersID",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1196,13 +1210,6 @@ export const schema = {
                         ]
                     }
                 },
-                "usersID": {
-                    "name": "usersID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
@@ -1222,7 +1229,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "byUserInv",
                         "fields": [
                             "usersID"
                         ]
@@ -1373,5 +1380,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "89767a5c66491064286398d166039ebd"
+    "version": "8a4e4924a0e740469375dc2bab963252"
 };

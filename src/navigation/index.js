@@ -20,6 +20,7 @@ import PropertyEdit from "../screens/PropertyEdit";
 import PropertyUserScreen from "../screens/PropertyUser";
 import { navigationRef } from "./RootNavigation";
 import InvoicesScreen from "../screens/InvoicesScreen";
+import CreateInvoiceScreen from "../screens/CreateInvoiceScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,7 @@ const Navigator = () => {
 
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} />     */}
         <Stack.Screen name="Invoices" component={InvoicesScreen} />
+        <Stack.Screen name="Create Invoice" component={CreateInvoiceScreen} />
         <Stack.Screen name="Add Property" component={PropertyEdit} />
         <Stack.Screen name="Task Images" component={GridScreen} />
         <Stack.Screen

@@ -247,7 +247,7 @@ const PropertyUserScreen = () => {
             Edit
           </Button>
           <Button
-            icon="account-edit"
+            icon="file"
             mode="contained"
             onPress={() => {
               navigation.navigate("Invoices", { userID: propertyUserID });

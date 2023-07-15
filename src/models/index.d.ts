@@ -352,10 +352,11 @@ type EagerInvoices = {
   readonly createdAt: string;
   readonly invoiceNo: string;
   readonly invoiceAmount: string;
+  readonly active?: boolean | null;
   readonly tasks?: string | null;
+  readonly usersID?: string | null;
   readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
   readonly Attachments?: (Attachment | null)[] | null;
-  readonly usersID?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -369,10 +370,11 @@ type LazyInvoices = {
   readonly createdAt: string;
   readonly invoiceNo: string;
   readonly invoiceAmount: string;
+  readonly active?: boolean | null;
   readonly tasks?: string | null;
+  readonly usersID?: string | null;
   readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
   readonly Attachments: AsyncCollection<Attachment>;
-  readonly usersID?: string | null;
   readonly updatedAt?: string | null;
 }
 
