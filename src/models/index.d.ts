@@ -350,7 +350,7 @@ type EagerInvoices = {
   readonly id: string;
   readonly title: string;
   readonly createdAt: string;
-  readonly invoiceNo: string;
+  readonly invoiceNo?: string | null;
   readonly invoiceAmount: string;
   readonly active?: boolean | null;
   readonly tasks?: string | null;
@@ -368,7 +368,7 @@ type LazyInvoices = {
   readonly id: string;
   readonly title: string;
   readonly createdAt: string;
-  readonly invoiceNo: string;
+  readonly invoiceNo?: string | null;
   readonly invoiceAmount: string;
   readonly active?: boolean | null;
   readonly tasks?: string | null;

@@ -25,9 +25,9 @@ const htmlContent = `
     </html>
 `;
 
-export const pdfPrint = async () => {
+export const printToFile = async () => {
   try {
-    const { uri } = await Print.printToFileAsync({ html });
+    const { uri } = await Print.printToFileAsync({ htmlContent });
     console.log(uri);
     return uri;
   } catch (err) {

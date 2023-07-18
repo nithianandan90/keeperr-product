@@ -149,7 +149,13 @@ type Invoices @model @auth(rules: [{ allow: public }]) {
   id: ID!
   title: String!
   createdAt: AWSDateTime!
-  invoiceNo: String!
+  invoiceNo: String
+    @index(
+      name: "invoicesByDate"
+      sortKeyFields: ["createdAt"]
+      queryField: "listInvoicesByDate"
+    )
+
   invoiceAmount: String!
   active: Boolean
   tasks: AWSJSON

@@ -7,7 +7,11 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button, List, RadioButton } from "react-native-paper";
 import { API, graphqlOperation } from "aws-amplify";
@@ -16,6 +20,12 @@ import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native";
 import { listTasksByProperty } from "../../graphql/queries";
 import { iconStyler } from "../../services/styler";
+import { createInvoices } from "../../graphql/mutations";
+import {
+  addAttachmentInvoice,
+  uploadFile,
+} from "../../services/uploaderService";
+import { printToFile } from "../../services/pdfPrint";
 
 DropDownPicker.setListMode("MODAL");
 
@@ -47,7 +57,13 @@ const CreateInvoiceScreen = () => {
 
   const [isTaskOpen, setTaskOpen] = useState(false);
 
+  const [fileUri, setFileUri] = useState("");
+
+  const [storageKey, setStorageKey] = useState("");
+
   const route = useRoute();
+
+  const navigation = useNavigation();
 
   const userID = route?.params.userID;
 
@@ -194,11 +210,50 @@ const CreateInvoiceScreen = () => {
     }
   };
 
-  const formSubmit = () => {
+  const formSubmit = async () => {
     console.log(formOutput);
+    console.log(userID);
+
+    const invoiceData = {
+      title: "Works Invoice",
+      invoiceNo: Math.random().toFixed(2) + "-" + userID,
+      active: true,
+      invoiceAmount: formOutput.totalAmount,
+      tasks: JSON.stringify(formOutput.invoiceTaskData),
+      usersID: userID,
+      status: "UNPAID",
+    };
+
+    const createdInvoice = await API.graphql(
+      graphqlOperation(createInvoices, { input: invoiceData })
+    );
+
+    console.log(createdInvoice);
+
+    const uri = await printToFile();
+
+    setFileUri(uri);
+
+    // const upload = await uploadFile(uri, "pdf");
+
+    // setStorageKey(upload);
+    // const file = {
+    //   name: invoiceData.invoiceNo,
+    //   uri: uri,
+    // };
+
+    // const invoiceAttachment = await addAttachmentInvoice(
+    //   file,
+    //   createdInvoice.data.createInvoice.id
+    // );
+
+    // setFileUri(uri);
+
     //save into the invoice table
     //create pdf file and upload
     //update invoice table to identify attachment
+
+    // navigation.navigate("Invoices", { userID: userID });
   };
 
   const numericTest = (text) => {
@@ -344,6 +399,8 @@ const CreateInvoiceScreen = () => {
       />
       <Text style={styles.totalAmount}>Total: {formOutput?.totalAmount} </Text>
       <Button onPress={formSubmit}>Submit</Button>
+      <TextInput value={fileUri} />
+      <TextInput value={storageKey} />
     </View>
   );
 };

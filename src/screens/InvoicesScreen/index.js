@@ -55,7 +55,6 @@ const InvoicesScreen = () => {
         filter: {
           usersID: { eq: userID },
           active: { ne: false },
-          _deleted: { ne: true },
         },
       })
     );
@@ -107,7 +106,12 @@ const InvoicesScreen = () => {
 
     return (
       <>
-        <Pressable onPress={() => {}} android_ripple={{ radius: 200 }}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Invoice", { invoice: item });
+          }}
+          android_ripple={{ radius: 200 }}
+        >
           <View style={{ padding: 10 }}>
             <List.Item
               title={`${item.title} #${item.invoiceNo}`}

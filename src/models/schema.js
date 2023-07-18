@@ -1154,7 +1154,7 @@ export const schema = {
                     "name": "invoiceNo",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "invoiceAmount": {
@@ -1225,6 +1225,17 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "invoicesByDate",
+                        "queryField": "listInvoicesByDate",
+                        "fields": [
+                            "invoiceNo",
+                            "createdAt"
+                        ]
+                    }
                 },
                 {
                     "type": "key",
@@ -1379,6 +1390,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "codegenVersion": "3.4.4",
-    "version": "8a4e4924a0e740469375dc2bab963252"
+    "codegenVersion": "3.4.2",
+    "version": "7a908094af0b419d0f5ba3e04c7f8090"
 };
