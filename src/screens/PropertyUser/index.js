@@ -24,7 +24,7 @@ const PropertyUserScreen = () => {
 
   const route = useRoute();
 
-  const propertyUserID = route.params.propertyUser;
+  const propertyUserID = route.params.propertyUser.id;
 
   const { updateUserDetails } = useAuthContext();
 
@@ -250,7 +250,9 @@ const PropertyUserScreen = () => {
             icon="file"
             mode="contained"
             onPress={() => {
-              navigation.navigate("Invoices", { userID: propertyUserID });
+              navigation.navigate("Invoices", {
+                user: route.params.propertyUser,
+              });
             }}
             style={{ marginBottom: 10 }}
           >

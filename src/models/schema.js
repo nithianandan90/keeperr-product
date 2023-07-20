@@ -1074,6 +1074,22 @@ export const schema = {
                         ]
                     }
                 },
+                "FirebaseTokens": {
+                    "name": "FirebaseTokens",
+                    "isArray": true,
+                    "type": {
+                        "model": "FirebaseTokens"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "usersID"
+                        ]
+                    }
+                },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
@@ -1157,6 +1173,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "discount": {
+                    "name": "discount",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "additionalCharges": {
+                    "name": "additionalCharges",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "invoiceAmount": {
                     "name": "invoiceAmount",
                     "isArray": false,
@@ -1175,6 +1205,27 @@ export const schema = {
                     "name": "tasks",
                     "isArray": false,
                     "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userName": {
+                    "name": "userName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userEmail": {
+                    "name": "userEmail",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "remarks": {
+                    "name": "remarks",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1241,6 +1292,90 @@ export const schema = {
                     "type": "key",
                     "properties": {
                         "name": "byUserInv",
+                        "fields": [
+                            "usersID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "FirebaseTokens": {
+            "name": "FirebaseTokens",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userType": {
+                    "name": "userType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "UserType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "token": {
+                    "name": "token",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "usersID": {
+                    "name": "usersID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FirebaseTokens",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTokens",
                         "fields": [
                             "usersID"
                         ]
@@ -1391,5 +1526,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.2",
-    "version": "7a908094af0b419d0f5ba3e04c7f8090"
+    "version": "93312ef2c550e3a753f4af6f8e5a601f"
 };

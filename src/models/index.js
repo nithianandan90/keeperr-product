@@ -20,7 +20,7 @@ const InvoiceStatus = {
   "OVERDUE": "OVERDUE"
 };
 
-const { Notifications, Properties, Task, Attachment, ChatRoom, Message, User, Invoices, UserChatRoom } = initSchema(schema);
+const { Notifications, Properties, Task, Attachment, ChatRoom, Message, User, Invoices, FirebaseTokens, UserChatRoom } = initSchema(schema);
 
 export {
   Notifications,
@@ -31,6 +31,7 @@ export {
   Message,
   User,
   Invoices,
+  FirebaseTokens,
   UserChatRoom,
   UserType,
   AttachmentType,

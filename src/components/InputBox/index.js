@@ -1,34 +1,46 @@
-import { useState } from 'react';
-import { View, StyleSheet, TextInput, Image, FlatList, Text, ActivityIndicator, Alert } from 'react-native';
-import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {API, graphqlOperation, Auth, Storage} from 'aws-amplify';
-import { createAttachment, createMessage, updateChatRoom } from '../../graphql/mutations';
-import * as ImagePicker from 'expo-image-picker';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
-import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
-import { sendNotificationToDevice } from '../../services/pushNotificationService';
+import { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
+import {
+  createAttachment,
+  createMessage,
+  updateChatRoom,
+} from "../../graphql/mutations";
+import * as ImagePicker from "expo-image-picker";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
+import { sendNotificationToDevice } from "../../services/pushNotificationService";
 
-const InputBox = ({chatroom}) => {
-  const [text, setText] = useState('');
+const InputBox = ({ chatroom }) => {
+  const [text, setText] = useState("");
   const [files, setFiles] = useState([]);
   const [progresses, setProgresses] = useState({});
   const [disableSend, setDisableSend] = useState(false);
 
-
   const getFileInfo = async (fileURI) => {
-    const fileInfo = await FileSystem.getInfoAsync(fileURI)
-    return fileInfo
- }
+    const fileInfo = await FileSystem.getInfoAsync(fileURI);
+    return fileInfo;
+  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       quality: 1,
-      allowsMultipleSelection: true
+      allowsMultipleSelection: true,
     });
 
     // const fileInfo = await getFileInfo(result.uri);
@@ -41,25 +53,21 @@ const InputBox = ({chatroom}) => {
     // console.log("file info",await getFileInfo(result.uri));
 
     if (!result.cancelled) {
-      if(result.selected){
+      if (result.selected) {
         //user selected multi
         setFiles(result.selected);
-      }else{
+      } else {
         setFiles([result]);
       }
     }
   };
 
-
   const pickDocument = async () => {
-
     // console.warn('pick document');
 
     let result = await DocumentPicker.getDocumentAsync({
-      type: "application/*"
+      type: "application/*",
     });
-
-   
 
     // No permissions request is necessary for launching the image library
     // let result = await ImagePicker.launchImageLibraryAsync({
@@ -68,248 +76,265 @@ const InputBox = ({chatroom}) => {
     //   allowsMultipleSelection: true
     // });
 
-
-  
-    
-    if (result.type !=='cancel') {
-      
-      if(result.selected){
+    if (result.type !== "cancel") {
+      if (result.selected) {
         //user selected multi
         setFiles(result.selected);
-      }else{
-        console.log('document result', result);
+      } else {
+        console.log("document result", result);
         setFiles([result]);
       }
     }
-    
   };
 
+  const addAttachment = async (file, messageID) => {
+    const fileInfo = await getFileInfo(file.uri);
 
-
-  const addAttachment = async (file, messageID)=>{
-    
-    
-     const fileInfo = await getFileInfo(file.uri);
-
-    if(fileInfo.size>25600000){
-      Alert.alert('File size exceeds 25 mb')
+    if (fileInfo.size > 25600000) {
+      Alert.alert("File size exceeds 25 mb");
       return;
     }
-   
+
     const types = {
       image: "IMAGE",
       video: "VIDEO",
-      success: "DOCUMENT"
+      success: "DOCUMENT",
+    };
 
-    }
-    
-    const fileType = file.uri.slice(file.uri.lastIndexOf('.') + 1);
+    const fileType = file.uri.slice(file.uri.lastIndexOf(".") + 1);
 
-    
     const newAttachment = {
       storageKey: await uploadFile(file.uri, fileType.toLowerCase()),
-      type: types[file.type], 
+      type: types[file.type],
       width: file.width,
       height: file.height,
-      duration: file.duration, 
-      messageID, 
-      chatroomID: chatroom.id
-    }
+      duration: file.duration,
+      messageID,
+      chatroomID: chatroom.id,
+    };
 
-    
-
-    return API.graphql(graphqlOperation(
-      createAttachment, 
-      {input: newAttachment}
-    ))
-
-  }
-
+    return API.graphql(
+      graphqlOperation(createAttachment, { input: newAttachment })
+    );
+  };
 
   const uploadFile = async (fileUri, fileType) => {
-	  
-
-    
     try {
-	    const response = await fetch(fileUri);
-	    const blob = await response.blob();
-	    const key = `${uuidv4()}.${fileType}`;
-	    await Storage.put(key, blob, {
-	      progressCallback(progress) {
-          setProgresses(p=>({...p, [fileUri]: progress.loaded/progress.total}))
+      const response = await fetch(fileUri);
+      const blob = await response.blob();
+      const key = `${uuidv4()}.${fileType}`;
+      await Storage.put(key, blob, {
+        progressCallback(progress) {
+          setProgresses((p) => ({
+            ...p,
+            [fileUri]: (progress.loaded / progress.total) * 100,
+          }));
         },
-	    });
-	    return key;
-	  } catch (err) {
-	   }
-	};
+      });
+      return key;
+    } catch (err) {}
+  };
 
-
-
-  const onSend  = async () => {
-    
-    
-    if(text || files.length>0){
+  const onSend = async () => {
+    if (text || files.length > 0) {
       // console.warn('Sending a new message: ', files);
       setDisableSend(true);
 
       const authuser = await Auth.currentAuthenticatedUser();
 
       const newMessage = {
-        chatroomID: chatroom?.id, 
-        text, 
-        userID: authuser.attributes.sub
-      }
+        chatroomID: chatroom?.id,
+        text,
+        userID: authuser.attributes.sub,
+      };
 
-      
       // if(files.length >0) {
       //   newMessage.files= await Promise.all(files.map(uploadFile));
       //   setFiles([]);
       // }
 
-
-
-      
-
       const newMessageData = await API.graphql(
-        graphqlOperation(
-          createMessage, {input: newMessage}
-        )
-      )
+        graphqlOperation(createMessage, { input: newMessage })
+      );
 
-      setText('');
+      setText("");
 
       //create attachments
 
-      await Promise.all(files.map((file)=>addAttachment(file, newMessageData.data.createMessage.id)));
+      await Promise.all(
+        files.map((file) =>
+          addAttachment(file, newMessageData.data.createMessage.id)
+        )
+      );
 
       setFiles([]);
 
       //set the new message as a LastMessage of the ChatRoom
 
-          
-      const chatRoomData = await API.graphql(graphqlOperation(
-        updateChatRoom, {input: {id: chatroom.id, chatRoomLastMessageId: newMessageData.data.createMessage.id, _version: chatroom._version} }
-      ))
-
+      const chatRoomData = await API.graphql(
+        graphqlOperation(updateChatRoom, {
+          input: {
+            id: chatroom.id,
+            chatRoomLastMessageId: newMessageData.data.createMessage.id,
+            _version: chatroom._version,
+          },
+        })
+      );
 
       const chatRoomUsers = chatRoomData.data.updateChatRoom.users.items;
 
       const propertyData = chatRoomData.data.updateChatRoom.Property;
-      console.log('chatroomdata',JSON.stringify(propertyData, null, 2))
-
+      console.log("chatroomdata", JSON.stringify(propertyData, null, 2));
 
       const notificationData = {
         notification: {
           title: propertyData.title,
-          body: text
+          body: text,
         },
         data: {
-          chatRoomID: chatRoomData.data.updateChatRoom.id
-        }
+          chatRoomID: chatRoomData.data.updateChatRoom.id,
+        },
       };
 
-      
-
-      chatRoomUsers.map((item)=>{
-        if(item.user.id!==authuser.attributes.sub){
+      chatRoomUsers.map((item) => {
+        if (item.user.id !== authuser.attributes.sub) {
           const token = item.user.firebaseToken;
-          sendNotificationToDevice(deviceId=token, notificationData);
+          sendNotificationToDevice((deviceId = token), notificationData);
         }
-      })
+      });
 
-      console.log('chatroom', JSON.stringify(chatRoomData.data.updateChatRoom.users.items[0].user.firebaseToken, null, 2))
-      
+      console.log(
+        "chatroom",
+        JSON.stringify(
+          chatRoomData.data.updateChatRoom.users.items[0].user.firebaseToken,
+          null,
+          2
+        )
+      );
+
       setDisableSend(false);
     }
-   
   };
 
   // console.log("files", files);
   return (
     <>
+      {files?.length > 0 && (
+        <View style={styles.attachmentsContainer}>
+          <FlatList
+            data={files}
+            horizontal
+            renderItem={({ item }) => (
+              <>
+                {item.type !== "success" ? (
+                  <Image
+                    source={{ uri: item.uri }}
+                    style={styles.selectedImage}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Ionicons name="document-attach" size={70} color="gray" />
+                )}
 
-    {files?.length>0 && (
-    
-    <View style={styles.attachmentsContainer}>
+                <View
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    backgroundColor: "gray",
+                  }}
+                >
+                  <Text style={{ color: "white" }}>
+                    {progresses[item.uri]}%
+                  </Text>
+                </View>
 
-      <FlatList
-        data={files}
-        horizontal
-        renderItem={({item})=>(
-          <>
-          {item.type!=='success'?(<Image source={{uri:item.uri}} style={styles.selectedImage} resizeMode='contain'/>):(<Ionicons name="document-attach" size={70} color="gray" />)}
-       
-          <View style={{position: "absolute", top: "50%", left:"50%", backgroundColor:'gray'}}>
-            <Text style={{color: 'white'}}>{progresses[item.uri]}%</Text>
-          </View>
-          
-          {!disableSend&&  <MaterialIcons
-            name="highlight-remove"
-            onPress={() => setFiles((existingfiles)=>existingfiles.filter((file)=>file!==item))}
-            size={20}
-            color="gray"
-            style={styles.removeSelectedImage}
-          />}
-        
-          </>
-        )}
-      />
-
-  
-
-
-    </View>)}
-
-    <SafeAreaView edges={['bottom']} style={styles.container}>
-      {/* Icon */}
-      <FontAwesome onPress={pickImage} name="photo" size={30} color="royalblue" style={{padding: 10}}/>
-      <Ionicons onPress={pickDocument} name="document" size={30} color="royalblue" />
-      
-      {/* Text Input */}
-      <TextInput
-        value={text}
-        onChangeText={setText}
-        style={styles.input}
-        placeholder="type your message..."
-      />
-
-      {/* Icon */}
-      {!disableSend?(  <MaterialIcons onPress={onSend} style={styles.send} name="send" size={16} color="white" />):(
-        <ActivityIndicator size="large" color={'#512da8'}/>
+                {!disableSend && (
+                  <MaterialIcons
+                    name="highlight-remove"
+                    onPress={() =>
+                      setFiles((existingfiles) =>
+                        existingfiles.filter((file) => file !== item)
+                      )
+                    }
+                    size={20}
+                    color="gray"
+                    style={styles.removeSelectedImage}
+                  />
+                )}
+              </>
+            )}
+          />
+        </View>
       )}
-    
-    </SafeAreaView>
+
+      <SafeAreaView edges={["bottom"]} style={styles.container}>
+        {/* Icon */}
+        <FontAwesome
+          onPress={pickImage}
+          name="photo"
+          size={30}
+          color="royalblue"
+          style={{ padding: 10 }}
+        />
+        <Ionicons
+          onPress={pickDocument}
+          name="document"
+          size={30}
+          color="royalblue"
+        />
+
+        {/* Text Input */}
+        <TextInput
+          value={text}
+          onChangeText={setText}
+          style={styles.input}
+          placeholder="type your message..."
+        />
+
+        {/* Icon */}
+        {!disableSend ? (
+          <MaterialIcons
+            onPress={onSend}
+            style={styles.send}
+            name="send"
+            size={16}
+            color="white"
+          />
+        ) : (
+          <ActivityIndicator size="large" color={"#512da8"} />
+        )}
+      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    backgroundColor: 'whitesmoke',
+    flexDirection: "row",
+    backgroundColor: "whitesmoke",
     padding: 5,
     paddingHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   input: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 5,
     paddingHorizontal: 10,
     marginHorizontal: 10,
 
     borderRadius: 50,
-    borderColor: 'lightgray',
+    borderColor: "lightgray",
     borderWidth: StyleSheet.hairlineWidth,
   },
   send: {
-    backgroundColor: 'royalblue',
+    backgroundColor: "royalblue",
     padding: 7,
     borderRadius: 15,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
-	attachmentsContainer: {
+  attachmentsContainer: {
     alignItems: "flex-end",
   },
   selectedImage: {
@@ -324,7 +349,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
   },
-
 });
 
 export default InputBox;

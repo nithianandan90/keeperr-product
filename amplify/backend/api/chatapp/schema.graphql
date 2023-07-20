@@ -143,6 +143,8 @@ type User @model @auth(rules: [{ allow: public }]) {
   Notifications: [Notifications] @hasMany(indexName: "byUser", fields: ["id"])
   Properties: [Properties] @hasMany(indexName: "byUser", fields: ["id"])
   Invoices: [Invoices] @hasMany(indexName: "byUserInv", fields: ["id"])
+  FirebaseTokens: [FirebaseTokens]
+    @hasMany(indexName: "byTokens", fields: ["id"])
 }
 
 type Invoices @model @auth(rules: [{ allow: public }]) {
@@ -156,10 +158,22 @@ type Invoices @model @auth(rules: [{ allow: public }]) {
       queryField: "listInvoicesByDate"
     )
 
+  discount: String
+  additionalCharges: String
   invoiceAmount: String!
   active: Boolean
   tasks: AWSJSON
+  userName: String
+  userEmail: AWSEmail
+  remarks: String
   usersID: ID @index(name: "byUserInv")
   status: InvoiceStatus
   Attachments: [Attachment] @hasMany(indexName: "byInvoices", fields: ["id"])
+}
+
+type FirebaseTokens @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userType: UserType
+  token: String
+  usersID: ID @index(name: "byTokens")
 }

@@ -3,7 +3,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { listInvoices } from "../../graphql/queries";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { List } from "react-native-paper";
 import { ActivityIndicator } from "react-native";
 import { useAuthContext } from "../../context/AuthContext";
@@ -20,7 +24,11 @@ const InvoicesScreen = () => {
 
   const navigation = useNavigation();
 
-  const userID = route.params.userID;
+  const isFocused = useIsFocused();
+
+  const user = route.params.user;
+
+  const userID = route.params.user.id;
 
   const { dbUser } = useAuthContext();
 
@@ -35,7 +43,7 @@ const InvoicesScreen = () => {
         <View style={{ flexDirection: "row" }}>
           <AntDesign
             onPress={() => {
-              navigation.navigate("Create Invoice", { userID: userID });
+              navigation.navigate("Create Invoice", { user: user });
             }}
             name="plus"
             size={24}
@@ -45,7 +53,7 @@ const InvoicesScreen = () => {
         </View>
       ),
     });
-  }, []);
+  }, [isFocused]);
 
   const getInvoices = async () => {
     setIsLoading(true);

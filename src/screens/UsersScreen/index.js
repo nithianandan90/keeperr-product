@@ -74,7 +74,7 @@ const UsersScreen = () => {
       <>
         <Pressable
           onPress={() => {
-            navigation.navigate("Property User", { propertyUser: item.id });
+            navigation.navigate("Property User", { propertyUser: item });
           }}
           android_ripple={{ radius: 200 }}
         >

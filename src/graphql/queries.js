@@ -14,7 +14,6 @@ export const getNotifications = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -36,11 +35,9 @@ export const listNotifications = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -68,11 +65,9 @@ export const syncNotifications = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -104,11 +99,9 @@ export const listNotificationsByUser = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -140,11 +133,9 @@ export const listNotificationsByTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -179,22 +170,18 @@ export const getProperties = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Attachments {
         items {
@@ -215,11 +202,9 @@ export const getProperties = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       usersID
       createdAt
@@ -227,7 +212,6 @@ export const getProperties = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -268,11 +252,9 @@ export const listProperties = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Attachments {
           items {
@@ -293,11 +275,9 @@ export const listProperties = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         usersID
         createdAt
@@ -305,11 +285,9 @@ export const listProperties = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -356,11 +334,9 @@ export const syncProperties = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Attachments {
           items {
@@ -381,11 +357,9 @@ export const syncProperties = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         usersID
         createdAt
@@ -393,11 +367,9 @@ export const syncProperties = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -446,11 +418,9 @@ export const propertiesByUsersID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Attachments {
           items {
@@ -471,11 +441,9 @@ export const propertiesByUsersID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         usersID
         createdAt
@@ -483,11 +451,9 @@ export const propertiesByUsersID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -525,11 +491,9 @@ export const getTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Notifications {
         items {
@@ -543,17 +507,14 @@ export const getTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -596,11 +557,9 @@ export const listTasks = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -614,21 +573,17 @@ export const listTasks = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -677,11 +632,9 @@ export const syncTasks = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -695,21 +648,17 @@ export const syncTasks = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -762,11 +711,9 @@ export const listTasksByProperty = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -780,21 +727,17 @@ export const listTasksByProperty = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -845,11 +788,9 @@ export const tasksByUsersID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -863,21 +804,17 @@ export const tasksByUsersID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -901,7 +838,6 @@ export const getAttachment = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -930,11 +866,9 @@ export const listAttachments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -969,11 +903,9 @@ export const syncAttachments = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1010,11 +942,9 @@ export const attachmentsByMessageID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1051,11 +981,9 @@ export const attachmentsByChatroomID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1094,11 +1022,9 @@ export const listAttachmentsByTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1135,11 +1061,9 @@ export const attachmentsByPropertiesID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1176,11 +1100,9 @@ export const attachmentsByInvoiceID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1201,17 +1123,14 @@ export const getChatRoom = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       users {
         items {
@@ -1229,7 +1148,6 @@ export const getChatRoom = /* GraphQL */ `
             _lastChangedAt
             chatRoomPropertyId
             chatRoomLastMessageId
-            __typename
           }
           user {
             id
@@ -1247,18 +1165,15 @@ export const getChatRoom = /* GraphQL */ `
             _deleted
             _lastChangedAt
             userImageId
-            __typename
           }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Property {
         id
@@ -1290,11 +1205,9 @@ export const getChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Attachments {
           items {
@@ -1315,11 +1228,9 @@ export const getChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         usersID
         createdAt
@@ -1327,7 +1238,6 @@ export const getChatRoom = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       LastMessage {
         id
@@ -1355,17 +1265,14 @@ export const getChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       Attachments {
         items {
@@ -1386,11 +1293,9 @@ export const getChatRoom = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
@@ -1399,7 +1304,6 @@ export const getChatRoom = /* GraphQL */ `
       _lastChangedAt
       chatRoomPropertyId
       chatRoomLastMessageId
-      __typename
     }
   }
 `;
@@ -1426,11 +1330,9 @@ export const listChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         users {
           items {
@@ -1442,11 +1344,9 @@ export const listChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Property {
           id
@@ -1463,12 +1363,10 @@ export const listChatRooms = /* GraphQL */ `
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           usersID
           createdAt
@@ -1476,7 +1374,6 @@ export const listChatRooms = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         LastMessage {
           id
@@ -1488,13 +1385,11 @@ export const listChatRooms = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         Attachments {
           items {
@@ -1515,11 +1410,9 @@ export const listChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         createdAt
         updatedAt
@@ -1528,11 +1421,9 @@ export const listChatRooms = /* GraphQL */ `
         _lastChangedAt
         chatRoomPropertyId
         chatRoomLastMessageId
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1565,11 +1456,9 @@ export const syncChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         users {
           items {
@@ -1581,11 +1470,9 @@ export const syncChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Property {
           id
@@ -1602,12 +1489,10 @@ export const syncChatRooms = /* GraphQL */ `
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           usersID
           createdAt
@@ -1615,7 +1500,6 @@ export const syncChatRooms = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         LastMessage {
           id
@@ -1627,13 +1511,11 @@ export const syncChatRooms = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         Attachments {
           items {
@@ -1654,11 +1536,9 @@ export const syncChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         createdAt
         updatedAt
@@ -1667,11 +1547,9 @@ export const syncChatRooms = /* GraphQL */ `
         _lastChangedAt
         chatRoomPropertyId
         chatRoomLastMessageId
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1703,17 +1581,14 @@ export const getMessage = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -1750,21 +1625,17 @@ export const listMessages = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1807,21 +1678,17 @@ export const syncMessages = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1868,21 +1735,17 @@ export const listMessagesByChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1927,21 +1790,17 @@ export const messagesByUserID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -1974,7 +1833,6 @@ export const getUser = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       firebaseToken
       ChatRooms {
@@ -1993,7 +1851,6 @@ export const getUser = /* GraphQL */ `
             _lastChangedAt
             chatRoomPropertyId
             chatRoomLastMessageId
-            __typename
           }
           user {
             id
@@ -2011,18 +1868,15 @@ export const getUser = /* GraphQL */ `
             _deleted
             _lastChangedAt
             userImageId
-            __typename
           }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       userType
       Tasks {
@@ -2042,22 +1896,18 @@ export const getUser = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Notifications {
         items {
@@ -2071,11 +1921,9 @@ export const getUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Properties {
         items {
@@ -2093,12 +1941,10 @@ export const getUser = /* GraphQL */ `
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           usersID
           createdAt
@@ -2106,11 +1952,9 @@ export const getUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       Invoices {
         items {
@@ -2118,32 +1962,48 @@ export const getUser = /* GraphQL */ `
           title
           createdAt
           invoiceNo
+          discount
+          additionalCharges
           invoiceAmount
           active
           tasks
+          userName
+          userEmail
+          remarks
           usersID
           status
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
+      }
+      FirebaseTokens {
+        items {
+          id
+          userType
+          token
+          usersID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
       userImageId
-      __typename
     }
   }
 `;
@@ -2181,7 +2041,6 @@ export const listUsers = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         firebaseToken
         ChatRooms {
@@ -2194,11 +2053,9 @@ export const listUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         userType
         Tasks {
@@ -2219,11 +2076,9 @@ export const listUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -2237,11 +2092,9 @@ export const listUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Properties {
           items {
@@ -2262,11 +2115,9 @@ export const listUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Invoices {
           items {
@@ -2274,31 +2125,47 @@ export const listUsers = /* GraphQL */ `
             title
             createdAt
             invoiceNo
+            discount
+            additionalCharges
             invoiceAmount
             active
             tasks
+            userName
+            userEmail
+            remarks
             usersID
             status
             updatedAt
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
+        }
+        FirebaseTokens {
+          items {
+            id
+            userType
+            token
+            usersID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
         userImageId
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -2342,7 +2209,6 @@ export const syncUsers = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         firebaseToken
         ChatRooms {
@@ -2355,11 +2221,9 @@ export const syncUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         userType
         Tasks {
@@ -2380,11 +2244,9 @@ export const syncUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -2398,11 +2260,9 @@ export const syncUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Properties {
           items {
@@ -2423,11 +2283,9 @@ export const syncUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Invoices {
           items {
@@ -2435,31 +2293,47 @@ export const syncUsers = /* GraphQL */ `
             title
             createdAt
             invoiceNo
+            discount
+            additionalCharges
             invoiceAmount
             active
             tasks
+            userName
+            userEmail
+            remarks
             usersID
             status
             updatedAt
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
+        }
+        FirebaseTokens {
+          items {
+            id
+            userType
+            token
+            usersID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
         userImageId
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -2507,7 +2381,6 @@ export const listUsersByDate = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         firebaseToken
         ChatRooms {
@@ -2520,11 +2393,9 @@ export const listUsersByDate = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         userType
         Tasks {
@@ -2545,11 +2416,9 @@ export const listUsersByDate = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -2563,11 +2432,9 @@ export const listUsersByDate = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Properties {
           items {
@@ -2588,11 +2455,9 @@ export const listUsersByDate = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Invoices {
           items {
@@ -2600,31 +2465,47 @@ export const listUsersByDate = /* GraphQL */ `
             title
             createdAt
             invoiceNo
+            discount
+            additionalCharges
             invoiceAmount
             active
             tasks
+            userName
+            userEmail
+            remarks
             usersID
             status
             updatedAt
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
+        }
+        FirebaseTokens {
+          items {
+            id
+            userType
+            token
+            usersID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
         userImageId
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -2635,9 +2516,14 @@ export const getInvoices = /* GraphQL */ `
       title
       createdAt
       invoiceNo
+      discount
+      additionalCharges
       invoiceAmount
       active
       tasks
+      userName
+      userEmail
+      remarks
       usersID
       status
       Attachments {
@@ -2659,17 +2545,14 @@ export const getInvoices = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         nextToken
         startedAt
-        __typename
       }
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -2685,9 +2568,14 @@ export const listInvoices = /* GraphQL */ `
         title
         createdAt
         invoiceNo
+        discount
+        additionalCharges
         invoiceAmount
         active
         tasks
+        userName
+        userEmail
+        remarks
         usersID
         status
         Attachments {
@@ -2709,21 +2597,17 @@ export const listInvoices = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -2745,9 +2629,14 @@ export const syncInvoices = /* GraphQL */ `
         title
         createdAt
         invoiceNo
+        discount
+        additionalCharges
         invoiceAmount
         active
         tasks
+        userName
+        userEmail
+        remarks
         usersID
         status
         Attachments {
@@ -2769,21 +2658,82 @@ export const syncInvoices = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
+    }
+  }
+`;
+export const listInvoicesByDate = /* GraphQL */ `
+  query ListInvoicesByDate(
+    $invoiceNo: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelInvoicesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInvoicesByDate(
+      invoiceNo: $invoiceNo
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        createdAt
+        invoiceNo
+        discount
+        additionalCharges
+        invoiceAmount
+        active
+        tasks
+        userName
+        userEmail
+        remarks
+        usersID
+        status
+        Attachments {
+          items {
+            id
+            storageKey
+            fileName
+            createdAt
+            type
+            width
+            height
+            duration
+            messageID
+            chatroomID
+            taskID
+            propertiesID
+            invoiceID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -2807,9 +2757,14 @@ export const invoicesByUsersID = /* GraphQL */ `
         title
         createdAt
         invoiceNo
+        discount
+        additionalCharges
         invoiceAmount
         active
         tasks
+        userName
+        userEmail
+        remarks
         usersID
         status
         Attachments {
@@ -2831,21 +2786,115 @@ export const invoicesByUsersID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
+    }
+  }
+`;
+export const getFirebaseTokens = /* GraphQL */ `
+  query GetFirebaseTokens($id: ID!) {
+    getFirebaseTokens(id: $id) {
+      id
+      userType
+      token
+      usersID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listFirebaseTokens = /* GraphQL */ `
+  query ListFirebaseTokens(
+    $filter: ModelFirebaseTokensFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFirebaseTokens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userType
+        token
+        usersID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncFirebaseTokens = /* GraphQL */ `
+  query SyncFirebaseTokens(
+    $filter: ModelFirebaseTokensFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncFirebaseTokens(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userType
+        token
+        usersID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const firebaseTokensByUsersID = /* GraphQL */ `
+  query FirebaseTokensByUsersID(
+    $usersID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelFirebaseTokensFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    firebaseTokensByUsersID(
+      usersID: $usersID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userType
+        token
+        usersID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -2871,11 +2920,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         users {
           items {
@@ -2887,11 +2934,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Property {
           id
@@ -2908,12 +2953,10 @@ export const getUserChatRoom = /* GraphQL */ `
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           usersID
           createdAt
@@ -2921,7 +2964,6 @@ export const getUserChatRoom = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         LastMessage {
           id
@@ -2933,13 +2975,11 @@ export const getUserChatRoom = /* GraphQL */ `
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         Attachments {
           items {
@@ -2960,11 +3000,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         createdAt
         updatedAt
@@ -2973,7 +3011,6 @@ export const getUserChatRoom = /* GraphQL */ `
         _lastChangedAt
         chatRoomPropertyId
         chatRoomLastMessageId
-        __typename
       }
       user {
         id
@@ -3002,7 +3039,6 @@ export const getUserChatRoom = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
         }
         firebaseToken
         ChatRooms {
@@ -3015,11 +3051,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         userType
         Tasks {
@@ -3040,11 +3074,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Notifications {
           items {
@@ -3058,11 +3090,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Properties {
           items {
@@ -3083,11 +3113,9 @@ export const getUserChatRoom = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
         }
         Invoices {
           items {
@@ -3095,34 +3123,50 @@ export const getUserChatRoom = /* GraphQL */ `
             title
             createdAt
             invoiceNo
+            discount
+            additionalCharges
             invoiceAmount
             active
             tasks
+            userName
+            userEmail
+            remarks
             usersID
             status
             updatedAt
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           nextToken
           startedAt
-          __typename
+        }
+        FirebaseTokens {
+          items {
+            id
+            userType
+            token
+            usersID
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
         }
         updatedAt
         _version
         _deleted
         _lastChangedAt
         userImageId
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -3144,12 +3188,10 @@ export const listUserChatRooms = /* GraphQL */ `
           Messages {
             nextToken
             startedAt
-            __typename
           }
           users {
             nextToken
             startedAt
-            __typename
           }
           Property {
             id
@@ -3169,7 +3211,6 @@ export const listUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           LastMessage {
             id
@@ -3182,12 +3223,10 @@ export const listUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           createdAt
           updatedAt
@@ -3196,7 +3235,6 @@ export const listUserChatRooms = /* GraphQL */ `
           _lastChangedAt
           chatRoomPropertyId
           chatRoomLastMessageId
-          __typename
         }
         user {
           id
@@ -3225,52 +3263,47 @@ export const listUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           firebaseToken
           ChatRooms {
             nextToken
             startedAt
-            __typename
           }
           userType
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           Properties {
             nextToken
             startedAt
-            __typename
           }
           Invoices {
             nextToken
             startedAt
-            __typename
+          }
+          FirebaseTokens {
+            nextToken
+            startedAt
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
           userImageId
-          __typename
         }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -3298,12 +3331,10 @@ export const syncUserChatRooms = /* GraphQL */ `
           Messages {
             nextToken
             startedAt
-            __typename
           }
           users {
             nextToken
             startedAt
-            __typename
           }
           Property {
             id
@@ -3323,7 +3354,6 @@ export const syncUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           LastMessage {
             id
@@ -3336,12 +3366,10 @@ export const syncUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           createdAt
           updatedAt
@@ -3350,7 +3378,6 @@ export const syncUserChatRooms = /* GraphQL */ `
           _lastChangedAt
           chatRoomPropertyId
           chatRoomLastMessageId
-          __typename
         }
         user {
           id
@@ -3379,52 +3406,47 @@ export const syncUserChatRooms = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           firebaseToken
           ChatRooms {
             nextToken
             startedAt
-            __typename
           }
           userType
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           Properties {
             nextToken
             startedAt
-            __typename
           }
           Invoices {
             nextToken
             startedAt
-            __typename
+          }
+          FirebaseTokens {
+            nextToken
+            startedAt
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
           userImageId
-          __typename
         }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -3454,12 +3476,10 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `
           Messages {
             nextToken
             startedAt
-            __typename
           }
           users {
             nextToken
             startedAt
-            __typename
           }
           Property {
             id
@@ -3479,7 +3499,6 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           LastMessage {
             id
@@ -3492,12 +3511,10 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           createdAt
           updatedAt
@@ -3506,7 +3523,6 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `
           _lastChangedAt
           chatRoomPropertyId
           chatRoomLastMessageId
-          __typename
         }
         user {
           id
@@ -3535,52 +3551,47 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           firebaseToken
           ChatRooms {
             nextToken
             startedAt
-            __typename
           }
           userType
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           Properties {
             nextToken
             startedAt
-            __typename
           }
           Invoices {
             nextToken
             startedAt
-            __typename
+          }
+          FirebaseTokens {
+            nextToken
+            startedAt
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
           userImageId
-          __typename
         }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;
@@ -3610,12 +3621,10 @@ export const userChatRoomsByUserId = /* GraphQL */ `
           Messages {
             nextToken
             startedAt
-            __typename
           }
           users {
             nextToken
             startedAt
-            __typename
           }
           Property {
             id
@@ -3635,7 +3644,6 @@ export const userChatRoomsByUserId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           LastMessage {
             id
@@ -3648,12 +3656,10 @@ export const userChatRoomsByUserId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           Attachments {
             nextToken
             startedAt
-            __typename
           }
           createdAt
           updatedAt
@@ -3662,7 +3668,6 @@ export const userChatRoomsByUserId = /* GraphQL */ `
           _lastChangedAt
           chatRoomPropertyId
           chatRoomLastMessageId
-          __typename
         }
         user {
           id
@@ -3691,52 +3696,47 @@ export const userChatRoomsByUserId = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
-            __typename
           }
           firebaseToken
           ChatRooms {
             nextToken
             startedAt
-            __typename
           }
           userType
           Tasks {
             nextToken
             startedAt
-            __typename
           }
           Notifications {
             nextToken
             startedAt
-            __typename
           }
           Properties {
             nextToken
             startedAt
-            __typename
           }
           Invoices {
             nextToken
             startedAt
-            __typename
+          }
+          FirebaseTokens {
+            nextToken
+            startedAt
           }
           updatedAt
           _version
           _deleted
           _lastChangedAt
           userImageId
-          __typename
         }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;

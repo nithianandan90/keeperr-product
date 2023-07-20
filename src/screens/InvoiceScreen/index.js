@@ -1,18 +1,52 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native";
 import { Button, Chip, List } from "react-native-paper";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { dateTimeFormatter } from "../../services/datetimeFormatter";
 import { Octicons } from "@expo/vector-icons/build/Icons";
+import { downloadFile, getInvoiceFile } from "../../services/downloaderService";
+import { useAuthContext } from "../../context/AuthContext";
+import { API, graphqlOperation } from "aws-amplify";
+import { updateInvoices } from "../../graphql/mutations";
 
 const InvoiceScreen = () => {
   const route = useRoute();
 
-  const invoice = route.params.invoice;
+  const [uri, setUri] = useState();
 
-  console.log("invoice", invoice);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [status, setStatus] = useState();
+
+  const invoice = route.params.invoice;
+  const { dbUser } = useAuthContext();
+
+  const admin = ["MANAGER", "PARTNER"];
+
+  const adminChecker = admin.some((k) => k === dbUser?.userType);
+
+  useEffect(() => {
+    getInvoiceFile(invoice.id).then(setUri);
+  }, []);
+
+  useEffect(() => {
+    if (invoice) {
+      setStatus(invoice.status);
+    }
+  }, [invoice]);
+
+  const markPaid = async () => {
+    const results = await API.graphql(
+      graphqlOperation(updateInvoices, {
+        input: { id: invoice.id, status: "PAID", _version: invoice._version },
+      })
+    );
+
+    console.log(results);
+    setStatus(results.data.updateInvoices.status);
+  };
 
   return (
     <View style={styles.detailsContainer}>
@@ -20,11 +54,11 @@ const InvoiceScreen = () => {
         ListHeaderComponent={() => (
           <View>
             <Chip style={{ margin: 10 }} icon="information">
-              {invoice.status}
+              {status}
             </Chip>
             <List.Item
-              title={invoice.title}
-              description={`Invoice No: ${invoice.invoiceNo}`}
+              title={invoice?.title}
+              description={`Invoice No: ${invoice?.invoiceNo}`}
               left={() => (
                 <List.Icon
                   icon={({ color }) => (
@@ -39,7 +73,7 @@ const InvoiceScreen = () => {
               style={{ paddingLeft: 25 }}
             />
             <List.Item
-              title={`RM ${invoice.invoiceAmount}`}
+              title={`Total: RM ${invoice?.invoiceAmount}`}
               left={() => (
                 <List.Icon
                   icon={({ color }) => (
@@ -53,7 +87,14 @@ const InvoiceScreen = () => {
               <List.Item
                 left={() => <Text>Invoice Issued:</Text>}
                 right={() => (
-                  <Text>{dateTimeFormatter(invoice.createdAt)}</Text>
+                  <Text>{dateTimeFormatter(invoice?.createdAt)}</Text>
+                )}
+                style={{ paddingLeft: 10 }}
+              />
+              <List.Item
+                left={() => <Text>Bank Details:</Text>}
+                right={() => (
+                  <Text>{`Bank: Maybank \nAccount: 564052536287 \nName: Retail Revolution \nSdn. Bhd. `}</Text>
                 )}
                 style={{ paddingLeft: 10 }}
               />
@@ -61,7 +102,7 @@ const InvoiceScreen = () => {
           </View>
         )}
         style={styles.updatesContainer}
-        data={JSON.parse(invoice.tasks)}
+        data={JSON.parse(invoice?.tasks)}
         renderItem={({ item }) => {
           return (
             <List.Item
@@ -80,13 +121,60 @@ const InvoiceScreen = () => {
           );
         }}
         ListFooterComponent={() => (
-          <View style={styles.filesContainer}>
-            <>
-              <Button icon="file" mode="contained" onPress={() => {}}>
+          <>
+            {/* Use task details view files to get the pdf  */}
+
+            <View style={styles.datesContainer}>
+              <List.Item
+                left={() => <Text>Additional Charges:</Text>}
+                right={() => (
+                  <Text>{`RM ${parseFloat(invoice?.additionalCharges).toFixed(
+                    2
+                  )}`}</Text>
+                )}
+                style={{ paddingLeft: 10 }}
+              />
+              <List.Item
+                left={() => <Text>Discount:</Text>}
+                right={() => (
+                  <Text>{`RM (${parseFloat(invoice?.discount).toFixed(
+                    2
+                  )})`}</Text>
+                )}
+                style={{ paddingLeft: 10 }}
+              />
+              <List.Item
+                left={() => <Text>Remarks:</Text>}
+                right={() => <Text>{invoice?.remarks}</Text>}
+                style={{ paddingLeft: 10 }}
+              />
+            </View>
+            {uri && (
+              <Button
+                style={{ marginBottom: 10 }}
+                icon="file"
+                mode="contained"
+                onPress={() => {
+                  downloadFile(uri, "Invoice.pdf");
+                }}
+              >
                 View Invoice pdf
               </Button>
-            </>
-          </View>
+            )}
+
+            {adminChecker && (
+              <Button
+                style={{ marginBottom: 10 }}
+                icon="file"
+                mode="contained"
+                onPress={() => {
+                  markPaid();
+                }}
+              >
+                Mark as Paid
+              </Button>
+            )}
+          </>
         )}
       />
     </View>

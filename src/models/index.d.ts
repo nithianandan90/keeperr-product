@@ -307,6 +307,7 @@ type EagerUser = {
   readonly Notifications?: (Notifications | null)[] | null;
   readonly Properties?: (Properties | null)[] | null;
   readonly Invoices?: (Invoices | null)[] | null;
+  readonly FirebaseTokens?: (FirebaseTokens | null)[] | null;
   readonly updatedAt?: string | null;
   readonly userImageId?: string | null;
 }
@@ -332,6 +333,7 @@ type LazyUser = {
   readonly Notifications: AsyncCollection<Notifications>;
   readonly Properties: AsyncCollection<Properties>;
   readonly Invoices: AsyncCollection<Invoices>;
+  readonly FirebaseTokens: AsyncCollection<FirebaseTokens>;
   readonly updatedAt?: string | null;
   readonly userImageId?: string | null;
 }
@@ -351,9 +353,14 @@ type EagerInvoices = {
   readonly title: string;
   readonly createdAt: string;
   readonly invoiceNo?: string | null;
+  readonly discount?: string | null;
+  readonly additionalCharges?: string | null;
   readonly invoiceAmount: string;
   readonly active?: boolean | null;
   readonly tasks?: string | null;
+  readonly userName?: string | null;
+  readonly userEmail?: string | null;
+  readonly remarks?: string | null;
   readonly usersID?: string | null;
   readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
   readonly Attachments?: (Attachment | null)[] | null;
@@ -369,9 +376,14 @@ type LazyInvoices = {
   readonly title: string;
   readonly createdAt: string;
   readonly invoiceNo?: string | null;
+  readonly discount?: string | null;
+  readonly additionalCharges?: string | null;
   readonly invoiceAmount: string;
   readonly active?: boolean | null;
   readonly tasks?: string | null;
+  readonly userName?: string | null;
+  readonly userEmail?: string | null;
+  readonly remarks?: string | null;
   readonly usersID?: string | null;
   readonly status?: InvoiceStatus | keyof typeof InvoiceStatus | null;
   readonly Attachments: AsyncCollection<Attachment>;
@@ -382,6 +394,38 @@ export declare type Invoices = LazyLoading extends LazyLoadingDisabled ? EagerIn
 
 export declare const Invoices: (new (init: ModelInit<Invoices>) => Invoices) & {
   copyOf(source: Invoices, mutator: (draft: MutableModel<Invoices>) => MutableModel<Invoices> | void): Invoices;
+}
+
+type EagerFirebaseTokens = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FirebaseTokens, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userType?: UserType | keyof typeof UserType | null;
+  readonly token?: string | null;
+  readonly usersID?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyFirebaseTokens = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FirebaseTokens, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userType?: UserType | keyof typeof UserType | null;
+  readonly token?: string | null;
+  readonly usersID?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type FirebaseTokens = LazyLoading extends LazyLoadingDisabled ? EagerFirebaseTokens : LazyFirebaseTokens
+
+export declare const FirebaseTokens: (new (init: ModelInit<FirebaseTokens>) => FirebaseTokens) & {
+  copyOf(source: FirebaseTokens, mutator: (draft: MutableModel<FirebaseTokens>) => MutableModel<FirebaseTokens> | void): FirebaseTokens;
 }
 
 type EagerUserChatRoom = {

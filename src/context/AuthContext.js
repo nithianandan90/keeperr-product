@@ -146,6 +146,8 @@ const AuthContextProvider = ({ children }) => {
 
         console.log("run sync", token, userData.data.getUser.id);
 
+        // store the tokens on a seperate table?
+
         const updatedUser = await API.graphql(
           graphqlOperation(updateUser, {
             input: {

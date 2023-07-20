@@ -26,6 +26,7 @@ import {
   uploadFile,
 } from "../../services/uploaderService";
 import { printToFile } from "../../services/pdfPrint";
+import { dateTimeFormatter } from "../../services/datetimeFormatter";
 
 DropDownPicker.setListMode("MODAL");
 
@@ -45,7 +46,7 @@ const CreateInvoiceScreen = () => {
   const [taskRemarks, setTaskRemarks] = useState();
 
   //Form Output for invoice
-  //schema {propertyID, invoiceTaskData:[{id, title, amount, remarks}], totalAmount, discount, otherRemarks}
+  //schema {propertyID, invoiceTaskData:[{id, title, amount, remarks}], totalAmount, discount, invoiceRemarks}
 
   const [formOutput, setFormOutput] = useState([]);
 
@@ -65,7 +66,9 @@ const CreateInvoiceScreen = () => {
 
   const navigation = useNavigation();
 
-  const userID = route?.params.userID;
+  const userID = route?.params.user.id;
+
+  const user = route?.params.user;
 
   useEffect(() => {
     setPropertyData([]);
@@ -211,8 +214,10 @@ const CreateInvoiceScreen = () => {
   };
 
   const formSubmit = async () => {
+    // console.log(formOutput);
+
+    setIsLoading(true);
     console.log(formOutput);
-    console.log(userID);
 
     const invoiceData = {
       title: "Works Invoice",
@@ -220,7 +225,12 @@ const CreateInvoiceScreen = () => {
       active: true,
       invoiceAmount: formOutput.totalAmount,
       tasks: JSON.stringify(formOutput.invoiceTaskData),
+      additionalCharges: formOutput.additionalCharges,
+      discount: formOutput.discount,
       usersID: userID,
+      userName: user.username,
+      userEmail: user.email,
+      remarks: formOutput.invoiceRemarks,
       status: "UNPAID",
     };
 
@@ -230,30 +240,37 @@ const CreateInvoiceScreen = () => {
 
     console.log(createdInvoice);
 
-    const uri = await printToFile();
+    const invoicePrintData = {
+      invoiceNo: invoiceData.invoiceNo,
+      issuedDate: dateTimeFormatter(new Date()),
+      customerName: invoiceData.userName,
+      customerEmail: invoiceData.userEmail,
+      tasks: formOutput.invoiceTaskData,
+      additionalCharges: formOutput.additionalCharges
+        ? formOutput.additionalCharges
+        : 0,
+      discount: formOutput.discount ? formOutput.discount : 0,
+      invoiceAmount: invoiceData.invoiceAmount,
+      remarks: invoiceData.remarks,
+    };
 
-    setFileUri(uri);
+    const uri = await printToFile(invoicePrintData);
 
-    // const upload = await uploadFile(uri, "pdf");
+    const file = {
+      uri: uri,
+      name: "Works Invoice" + userID,
+    };
 
-    // setStorageKey(upload);
-    // const file = {
-    //   name: invoiceData.invoiceNo,
-    //   uri: uri,
-    // };
+    const addAttachment = await addAttachmentInvoice(
+      file,
+      createdInvoice.data.createInvoices.id
+    );
 
-    // const invoiceAttachment = await addAttachmentInvoice(
-    //   file,
-    //   createdInvoice.data.createInvoice.id
-    // );
+    console.warn("success");
 
-    // setFileUri(uri);
+    setIsLoading(false);
 
-    //save into the invoice table
-    //create pdf file and upload
-    //update invoice table to identify attachment
-
-    // navigation.navigate("Invoices", { userID: userID });
+    navigation.navigate("Invoices", { user: user });
   };
 
   const numericTest = (text) => {
