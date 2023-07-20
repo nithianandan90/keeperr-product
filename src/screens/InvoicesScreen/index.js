@@ -26,11 +26,11 @@ const InvoicesScreen = () => {
 
   const isFocused = useIsFocused();
 
-  const user = route.params.user;
-
-  const userID = route.params.user.id;
-
   const { dbUser } = useAuthContext();
+
+  const user = route.params ? route.params.user : dbUser;
+
+  const userID = route.params ? route.params.user.id : dbUser.id;
 
   const admin = ["MANAGER", "PARTNER"];
 

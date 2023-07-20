@@ -1,7 +1,12 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { Auth, API, graphqlOperation } from "aws-amplify";
-import { getUser, listUsers } from "../graphql/queries";
-import { createUser, updateUser } from "../graphql/mutations";
+import { getUser, listFirebaseTokens, listUsers } from "../graphql/queries";
+import {
+  createFirebaseTokens,
+  createUser,
+  deleteFirebaseTokens,
+  updateUser,
+} from "../graphql/mutations";
 import messaging from "@react-native-firebase/messaging";
 import * as Notifications from "expo-notifications";
 import * as Linking from "expo-linking";
@@ -16,6 +21,7 @@ const AuthContextProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
   const [dbUser, setDbUser] = useState(null);
   const [newToken, setNewToken] = useState(null);
+  const [createdToken, setCreatedToken] = useState();
   const sub = authUser?.attributes?.sub;
   const firebaseMessaging = messaging;
   const navigation = RootNavigation;
@@ -53,14 +59,12 @@ const AuthContextProvider = ({ children }) => {
       console.log("Message handled in the background!", remoteMessage);
     });
 
-    const unsubscribe = firebaseMessaging().onMessage(async (remoteMessage) => {
-      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
-    });
+    // const unsubscribe = firebaseMessaging().onMessage(async (remoteMessage) => {
+    //   Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    // });
 
-    return unsubscribe;
+    // return unsubscribe;
   }, []);
-
-  useEffect(() => {}, [newToken]);
 
   const requestUserPermission = async () => {
     const authStatus = await firebaseMessaging().requestPermission();
@@ -137,7 +141,7 @@ const AuthContextProvider = ({ children }) => {
       graphqlOperation(getUser, { id: authUser.attributes.sub })
     );
 
-    //if user in database return
+    //if user in database
     if (userData.data.getUser) {
       if (requestUserPermission()) {
         //return fcm token for the device
@@ -146,7 +150,7 @@ const AuthContextProvider = ({ children }) => {
 
         console.log("run sync", token, userData.data.getUser.id);
 
-        // store the tokens on a seperate table?
+        //store the tokens on a seperate table?
 
         const updatedUser = await API.graphql(
           graphqlOperation(updateUser, {
@@ -158,6 +162,20 @@ const AuthContextProvider = ({ children }) => {
           })
         );
 
+        const createToken = await API.graphql(
+          graphqlOperation(createFirebaseTokens, {
+            input: {
+              userType: userData.data.getUser.userType,
+              token: token,
+              usersID: userData.data.getUser.id,
+            },
+          })
+        );
+
+        // 20/07/23 insert into token table when user signs in
+
+        setCreatedToken(createToken.data.createFirebaseTokens);
+
         setDbUser(updatedUser.data.updateUser);
       } else {
         setDbUser(userData.data.getUser);
@@ -167,7 +185,7 @@ const AuthContextProvider = ({ children }) => {
       return;
     }
 
-    //get token and add token here
+    // 20/07/23 new user signup
     const newUser = {
       id: authUser.attributes.sub,
       email: authUser.attributes.email,
@@ -197,6 +215,20 @@ const AuthContextProvider = ({ children }) => {
         })
       );
 
+      const createToken = await API.graphql(
+        graphqlOperation(createFirebaseTokens, {
+          input: {
+            userType: newUserResponse.data.createUser.userType,
+            token: token,
+            usersID: newUserResponse.data.createUser.id,
+          },
+        })
+      );
+
+      // 20/07/23 insert into token table when user signs in
+
+      setCreatedToken(createToken.data.createFirebaseTokens);
+
       setDbUser(updatedUser.data.updateUser);
     } else {
       setDbUser(newUserResponse.data.createUser);
@@ -204,8 +236,10 @@ const AuthContextProvider = ({ children }) => {
     }
 
     //send push notification to all the managers
-    const managers = await API.graphql(
-      graphqlOperation(listUsers, { filter: { userType: { eq: "MANAGER" } } })
+    const managerTokens = await API.graphql(
+      graphqlOperation(listFirebaseTokens, {
+        filter: { userType: { eq: "MANAGER" } },
+      })
     );
 
     const notificationData = {
@@ -218,14 +252,8 @@ const AuthContextProvider = ({ children }) => {
       },
     };
 
-    console.log("managers", managers.data.listUsers.items);
-
-    managers.data.listUsers.items.map((manager) => {
-      console.log("arrived at manager loop");
-
-      const token = manager.firebaseToken;
-
-      sendNotificationToDevice((deviceId = token), notificationData);
+    managerTokens.data.listFirebaseTokens.items.map((item) => {
+      sendNotificationToDevice((deviceId = item.token), notificationData);
     });
   };
 
@@ -236,6 +264,15 @@ const AuthContextProvider = ({ children }) => {
         input: { id: dbUser.id, firebaseToken: "", _version: dbUser._version },
       })
     );
+
+    // 20/07/23 delete from tokens table when user sign out
+    if (createdToken) {
+      const deleteTokens = await API.graphql(
+        graphqlOperation(deleteFirebaseTokens, {
+          input: { id: createdToken.id, _version: createdToken._version },
+        })
+      );
+    }
 
     console.log("signout user", updatedUser);
     Auth.signOut();

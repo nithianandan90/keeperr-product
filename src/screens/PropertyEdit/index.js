@@ -85,7 +85,9 @@ const TaskEdit = () => {
     setUserData([]);
     setIsLoading(true);
     const results = await API.graphql(graphqlOperation(listUsers));
-    const fetchedUsers = results.data.listUsers.items;
+    const fetchedUsers = results.data.listUsers.items.filter(
+      (k) => !k._deleted
+    );
 
     const data = fetchedUsers.map((item) => {
       setUserData((k) => [...k, { label: item.email, value: item.id }]);

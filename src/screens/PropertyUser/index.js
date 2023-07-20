@@ -102,9 +102,9 @@ const PropertyUserScreen = () => {
       if (!Array.isArray(propertiesResult)) {
         const result_array = [propertiesResult];
 
-        setProperties(result_array);
+        setProperties(result_array.filter((i) => !i._deleted));
       } else {
-        setProperties(propertiesResult);
+        setProperties(propertiesResult.filter((i) => !i._deleted));
       }
     }
 

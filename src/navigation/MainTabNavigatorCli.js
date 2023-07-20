@@ -1,20 +1,27 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons,  MaterialCommunityIcons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import NotificationsScreen from '../screens/NotificationsScreen';
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import { useAuthContext } from "../context/AuthContext";
+import InvoicesScreen from "../screens/InvoicesScreen";
 
 const Tab = createBottomTabNavigator();
 
 const MainTabNavigatorCli = () => {
+  const { dbUser } = useAuthContext();
+
   return (
     <Tab.Navigator
       initialRouteName="Properties"
       screenOptions={{
-        tabBarActiveTintColor:'black',
-        tabBarStyle: { backgroundColor: 'whitesmoke' },
-        headerStyle: { backgroundColor: 'whitesmoke' },
+        tabBarActiveTintColor: "black",
+        tabBarStyle: { backgroundColor: "whitesmoke" },
+        headerStyle: { backgroundColor: "whitesmoke" },
       }}
     >
       <Tab.Screen
@@ -22,7 +29,11 @@ const MainTabNavigatorCli = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="office-building-marker" size={24} color={color} />
+            <MaterialCommunityIcons
+              name="office-building-marker"
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
@@ -45,6 +56,20 @@ const MainTabNavigatorCli = () => {
         }}
       /> */}
       <Tab.Screen
+        name="Billing"
+        component={InvoicesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5
+              name="file-invoice-dollar"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
         name="Settings"
         component={ProfileScreen}
         options={{
@@ -53,7 +78,6 @@ const MainTabNavigatorCli = () => {
           ),
         }}
       />
-    
     </Tab.Navigator>
   );
 };

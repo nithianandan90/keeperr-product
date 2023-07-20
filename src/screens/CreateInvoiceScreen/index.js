@@ -97,8 +97,11 @@ const CreateInvoiceScreen = () => {
       graphqlOperation(listProperties, { filter: { usersID: { eq: userID } } })
     );
 
-    const fetchedResults = results.data.listProperties.items;
+    const fetchedResults = results.data.listProperties.items.filter(
+      (item) => !item._deleted
+    );
 
+    console.log("fetched", fetchedResults);
     const data = fetchedResults.map((item) => {
       setPropertyData((k) => [...k, { label: item.title, value: item.id }]);
     });

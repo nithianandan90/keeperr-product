@@ -15,6 +15,10 @@ export const getInvoiceFile = async (invoiceID) => {
 
   const attachment = results.data.listAttachments.items[0];
 
+  if (!attachment) {
+    return;
+  }
+
   const uri = await Storage.get(attachment.storageKey);
 
   return uri;

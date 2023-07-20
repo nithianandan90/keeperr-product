@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native";
-import { Button, Chip, List } from "react-native-paper";
+import { Button, Chip, List, RadioButton } from "react-native-paper";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { dateTimeFormatter } from "../../services/datetimeFormatter";
 import { Octicons } from "@expo/vector-icons/build/Icons";
@@ -10,6 +10,7 @@ import { downloadFile, getInvoiceFile } from "../../services/downloaderService";
 import { useAuthContext } from "../../context/AuthContext";
 import { API, graphqlOperation } from "aws-amplify";
 import { updateInvoices } from "../../graphql/mutations";
+import { ActivityIndicator } from "react-native";
 
 const InvoiceScreen = () => {
   const route = useRoute();
@@ -28,7 +29,11 @@ const InvoiceScreen = () => {
   const adminChecker = admin.some((k) => k === dbUser?.userType);
 
   useEffect(() => {
-    getInvoiceFile(invoice.id).then(setUri);
+    setIsLoading(true);
+    getInvoiceFile(invoice.id).then((k) => {
+      setUri(k);
+      setIsLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -37,16 +42,20 @@ const InvoiceScreen = () => {
     }
   }, [invoice]);
 
-  const markPaid = async () => {
+  const updateInvoice = async () => {
     const results = await API.graphql(
       graphqlOperation(updateInvoices, {
-        input: { id: invoice.id, status: "PAID", _version: invoice._version },
+        input: { id: invoice.id, status: status, _version: invoice._version },
       })
     );
 
     console.log(results);
     setStatus(results.data.updateInvoices.status);
   };
+
+  if (isLoading) {
+    return <ActivityIndicator size="large" color={"#512da8"} />;
+  }
 
   return (
     <View style={styles.detailsContainer}>
@@ -149,6 +158,7 @@ const InvoiceScreen = () => {
                 style={{ paddingLeft: 10 }}
               />
             </View>
+
             {uri && (
               <Button
                 style={{ marginBottom: 10 }}
@@ -163,16 +173,55 @@ const InvoiceScreen = () => {
             )}
 
             {adminChecker && (
-              <Button
-                style={{ marginBottom: 10 }}
-                icon="file"
-                mode="contained"
-                onPress={() => {
-                  markPaid();
-                }}
-              >
-                Mark as Paid
-              </Button>
+              <View>
+                <View style={{ marginLeft: 10, marginBottom: 10 }}>
+                  <RadioButton.Group
+                    onValueChange={(newValue) => setStatus(newValue)}
+                    value={status}
+                  >
+                    <View
+                      style={{
+                        paddingHorizontal: 5,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <RadioButton value="PAID" />
+                      <Text>PAID</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingHorizontal: 5,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <RadioButton value="UNPAID" />
+                      <Text>UNPAID</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingHorizontal: 5,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <RadioButton value="OVERDUE" />
+                      <Text>OVERDUE</Text>
+                    </View>
+                  </RadioButton.Group>
+                </View>
+                <Button
+                  style={{ marginBottom: 10 }}
+                  icon="airplane"
+                  mode="contained"
+                  onPress={() => {
+                    updateInvoice();
+                  }}
+                >
+                  Update Invoice
+                </Button>
+              </View>
             )}
           </>
         )}

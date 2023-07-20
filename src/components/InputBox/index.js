@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { sendNotificationToDevice } from "../../services/pushNotificationService";
+import { listFirebaseTokens } from "../../graphql/queries";
 
 const InputBox = ({ chatroom }) => {
   const [text, setText] = useState("");
@@ -184,7 +185,8 @@ const InputBox = ({ chatroom }) => {
       const chatRoomUsers = chatRoomData.data.updateChatRoom.users.items;
 
       const propertyData = chatRoomData.data.updateChatRoom.Property;
-      console.log("chatroomdata", JSON.stringify(propertyData, null, 2));
+
+      console.log("users", chatRoomUsers);
 
       const notificationData = {
         notification: {
@@ -196,21 +198,24 @@ const InputBox = ({ chatroom }) => {
         },
       };
 
-      chatRoomUsers.map((item) => {
-        if (item.user.id !== authuser.attributes.sub) {
-          const token = item.user.firebaseToken;
-          sendNotificationToDevice((deviceId = token), notificationData);
-        }
+      const orArray = chatRoomUsers.map((item) => {
+        return { usersID: { eq: item.user.id } };
       });
 
-      console.log(
-        "chatroom",
-        JSON.stringify(
-          chatRoomData.data.updateChatRoom.users.items[0].user.firebaseToken,
-          null,
-          2
-        )
+      const fireBaseTokenArray = await API.graphql(
+        graphqlOperation(listFirebaseTokens, { filter: { or: orArray } })
       );
+
+      const fetchedTokens =
+        fireBaseTokenArray.data.listFirebaseTokens.items.filter(
+          (item) => !item._deleted
+        );
+
+      fetchedTokens.map((item) => {
+        if (item.usersID !== authuser.attributes.sub) {
+          sendNotificationToDevice((deviceId = item.token), notificationData);
+        }
+      });
 
       setDisableSend(false);
     }

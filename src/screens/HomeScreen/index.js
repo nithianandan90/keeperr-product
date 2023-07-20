@@ -77,7 +77,9 @@ const HomeScreen = () => {
 
       // const tasks = await result.Tasks;
 
-      const propertiesResult = result.data.listProperties.items;
+      const propertiesResult = result.data.listProperties.items.filter(
+        (item) => !item._deleted
+      );
 
       if (propertiesResult) {
         if (!Array.isArray(propertiesResult)) {
