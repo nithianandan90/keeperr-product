@@ -2,6 +2,7 @@ enum UserType {
   CLIENT
   PARTNER
   MANAGER
+  TENANT
 }
 
 enum AttachmentType {
