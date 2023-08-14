@@ -2,7 +2,6 @@ enum UserType {
   CLIENT
   PARTNER
   MANAGER
-  TENANT
 }
 
 enum AttachmentType {
@@ -49,6 +48,7 @@ type Properties @model @auth(rules: [{ allow: public }]) {
   status: String!
   active: Boolean
   Tasks: [Task] @hasMany(indexName: "byProperties", fields: ["id"])
+  Tenants: [Tenants] @hasMany(indexName: "byProperties", fields: ["id"])
   Attachments: [Attachment] @hasMany(indexName: "byProperties", fields: ["id"])
   usersID: ID @index(name: "byUser")
 }
@@ -64,6 +64,7 @@ type Task @model @auth(rules: [{ allow: public }]) {
   taskType: String!
   recurrence: String!
   active: Boolean
+  ownerOnly: Boolean
   propertiesID: ID!
     @index(
       name: "byProperties"
@@ -71,6 +72,7 @@ type Task @model @auth(rules: [{ allow: public }]) {
       queryField: "listTasksByProperty"
     )
   usersID: ID @index(name: "byUser")
+  TenantTasks: [TenantTasks] @hasMany(indexName: "byTask", fields: ["id"])
   Attachments: [Attachment] @hasMany(indexName: "byTask", fields: ["id"])
   Notifications: [Notifications] @hasMany(indexName: "byTask", fields: ["id"])
 }
@@ -93,7 +95,12 @@ type Attachment @model @auth(rules: [{ allow: public }]) {
       queryField: "listAttachmentsByTask"
     )
   propertiesID: ID @index(name: "byProperties")
-  invoiceID: ID @index(name: "byInvoices")
+  invoiceID: ID
+    @index(
+      name: "byInvoices"
+      sortKeyFields: ["createdAt"]
+      queryField: "listAttachmentsByInvoice"
+    )
 }
 
 type ChatRoom @model @auth(rules: [{ allow: public }]) {
@@ -177,4 +184,18 @@ type FirebaseTokens @model @auth(rules: [{ allow: public }]) {
   userType: UserType
   token: String
   usersID: ID @index(name: "byTokens")
+}
+
+type Tenants @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  propertiesID: ID @index(name: "byProperties")
+  userID: String
+  active: Boolean
+}
+
+type TenantTasks @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  taskID: ID @index(name: "byTask")
+  userID: String
+  active: Boolean
 }

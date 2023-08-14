@@ -19,7 +19,7 @@ const MainTabNavigatorCli = () => {
     <Tab.Navigator
       initialRouteName="Properties"
       screenOptions={{
-        tabBarActiveTintColor: "black",
+        tabBarActiveTintColor: "#512da8",
         tabBarStyle: { backgroundColor: "whitesmoke" },
         headerStyle: { backgroundColor: "whitesmoke" },
       }}

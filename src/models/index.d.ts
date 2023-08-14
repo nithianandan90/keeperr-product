@@ -73,6 +73,7 @@ type EagerProperties = {
   readonly status: string;
   readonly active?: boolean | null;
   readonly Tasks?: (Task | null)[] | null;
+  readonly Tenants?: (Tenants | null)[] | null;
   readonly Attachments?: (Attachment | null)[] | null;
   readonly usersID?: string | null;
   readonly createdAt?: string | null;
@@ -96,6 +97,7 @@ type LazyProperties = {
   readonly status: string;
   readonly active?: boolean | null;
   readonly Tasks: AsyncCollection<Task>;
+  readonly Tenants: AsyncCollection<Tenants>;
   readonly Attachments: AsyncCollection<Attachment>;
   readonly usersID?: string | null;
   readonly createdAt?: string | null;
@@ -123,8 +125,10 @@ type EagerTask = {
   readonly taskType: string;
   readonly recurrence: string;
   readonly active?: boolean | null;
+  readonly ownerOnly?: boolean | null;
   readonly propertiesID: string;
   readonly usersID?: string | null;
+  readonly TenantTasks?: (TenantTasks | null)[] | null;
   readonly Attachments?: (Attachment | null)[] | null;
   readonly Notifications?: (Notifications | null)[] | null;
   readonly updatedAt?: string | null;
@@ -145,8 +149,10 @@ type LazyTask = {
   readonly taskType: string;
   readonly recurrence: string;
   readonly active?: boolean | null;
+  readonly ownerOnly?: boolean | null;
   readonly propertiesID: string;
   readonly usersID?: string | null;
+  readonly TenantTasks: AsyncCollection<TenantTasks>;
   readonly Attachments: AsyncCollection<Attachment>;
   readonly Notifications: AsyncCollection<Notifications>;
   readonly updatedAt?: string | null;
@@ -426,6 +432,70 @@ export declare type FirebaseTokens = LazyLoading extends LazyLoadingDisabled ? E
 
 export declare const FirebaseTokens: (new (init: ModelInit<FirebaseTokens>) => FirebaseTokens) & {
   copyOf(source: FirebaseTokens, mutator: (draft: MutableModel<FirebaseTokens>) => MutableModel<FirebaseTokens> | void): FirebaseTokens;
+}
+
+type EagerTenants = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Tenants, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly propertiesID?: string | null;
+  readonly userID?: string | null;
+  readonly active?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTenants = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Tenants, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly propertiesID?: string | null;
+  readonly userID?: string | null;
+  readonly active?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Tenants = LazyLoading extends LazyLoadingDisabled ? EagerTenants : LazyTenants
+
+export declare const Tenants: (new (init: ModelInit<Tenants>) => Tenants) & {
+  copyOf(source: Tenants, mutator: (draft: MutableModel<Tenants>) => MutableModel<Tenants> | void): Tenants;
+}
+
+type EagerTenantTasks = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TenantTasks, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly taskID?: string | null;
+  readonly userID?: string | null;
+  readonly active?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTenantTasks = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TenantTasks, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly taskID?: string | null;
+  readonly userID?: string | null;
+  readonly active?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TenantTasks = LazyLoading extends LazyLoadingDisabled ? EagerTenantTasks : LazyTenantTasks
+
+export declare const TenantTasks: (new (init: ModelInit<TenantTasks>) => TenantTasks) & {
+  copyOf(source: TenantTasks, mutator: (draft: MutableModel<TenantTasks>) => MutableModel<TenantTasks> | void): TenantTasks;
 }
 
 type EagerUserChatRoom = {

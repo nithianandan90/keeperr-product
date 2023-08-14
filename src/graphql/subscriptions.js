@@ -83,8 +83,13 @@ export const onCreateProperties = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -93,6 +98,21 @@ export const onCreateProperties = /* GraphQL */ `
             nextToken
             startedAt
           }
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      Tenants {
+        items {
+          id
+          propertiesID
+          userID
+          active
+          createdAt
           updatedAt
           _version
           _deleted
@@ -161,8 +181,13 @@ export const onUpdateProperties = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -171,6 +196,21 @@ export const onUpdateProperties = /* GraphQL */ `
             nextToken
             startedAt
           }
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      Tenants {
+        items {
+          id
+          propertiesID
+          userID
+          active
+          createdAt
           updatedAt
           _version
           _deleted
@@ -239,8 +279,13 @@ export const onDeleteProperties = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -249,6 +294,21 @@ export const onDeleteProperties = /* GraphQL */ `
             nextToken
             startedAt
           }
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      Tenants {
+        items {
+          id
+          propertiesID
+          userID
+          active
+          createdAt
           updatedAt
           _version
           _deleted
@@ -302,8 +362,24 @@ export const onCreateTask = /* GraphQL */ `
       taskType
       recurrence
       active
+      ownerOnly
       propertiesID
       usersID
+      TenantTasks {
+        items {
+          id
+          taskID
+          userID
+          active
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Attachments {
         items {
           id
@@ -363,8 +439,24 @@ export const onUpdateTask = /* GraphQL */ `
       taskType
       recurrence
       active
+      ownerOnly
       propertiesID
       usersID
+      TenantTasks {
+        items {
+          id
+          taskID
+          userID
+          active
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Attachments {
         items {
           id
@@ -424,8 +516,24 @@ export const onDeleteTask = /* GraphQL */ `
       taskType
       recurrence
       active
+      ownerOnly
       propertiesID
       usersID
+      TenantTasks {
+        items {
+          id
+          taskID
+          userID
+          active
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Attachments {
         items {
           id
@@ -640,8 +748,24 @@ export const onCreateChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -841,8 +965,24 @@ export const onUpdateChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -1042,8 +1182,24 @@ export const onDeleteChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -1354,8 +1510,13 @@ export const onCreateUser = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -1402,6 +1563,10 @@ export const onCreateUser = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -1557,8 +1722,13 @@ export const onUpdateUser = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -1605,6 +1775,10 @@ export const onUpdateUser = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -1760,8 +1934,13 @@ export const onDeleteUser = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -1808,6 +1987,10 @@ export const onDeleteUser = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -2068,6 +2251,102 @@ export const onDeleteFirebaseTokens = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTenants = /* GraphQL */ `
+  subscription OnCreateTenants($filter: ModelSubscriptionTenantsFilterInput) {
+    onCreateTenants(filter: $filter) {
+      id
+      propertiesID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateTenants = /* GraphQL */ `
+  subscription OnUpdateTenants($filter: ModelSubscriptionTenantsFilterInput) {
+    onUpdateTenants(filter: $filter) {
+      id
+      propertiesID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteTenants = /* GraphQL */ `
+  subscription OnDeleteTenants($filter: ModelSubscriptionTenantsFilterInput) {
+    onDeleteTenants(filter: $filter) {
+      id
+      propertiesID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateTenantTasks = /* GraphQL */ `
+  subscription OnCreateTenantTasks(
+    $filter: ModelSubscriptionTenantTasksFilterInput
+  ) {
+    onCreateTenantTasks(filter: $filter) {
+      id
+      taskID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateTenantTasks = /* GraphQL */ `
+  subscription OnUpdateTenantTasks(
+    $filter: ModelSubscriptionTenantTasksFilterInput
+  ) {
+    onUpdateTenantTasks(filter: $filter) {
+      id
+      taskID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteTenantTasks = /* GraphQL */ `
+  subscription OnDeleteTenantTasks(
+    $filter: ModelSubscriptionTenantTasksFilterInput
+  ) {
+    onDeleteTenantTasks(filter: $filter) {
+      id
+      taskID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateUserChatRoom = /* GraphQL */ `
   subscription OnCreateUserChatRoom(
     $filter: ModelSubscriptionUserChatRoomFilterInput
@@ -2123,6 +2402,10 @@ export const onCreateUserChatRoom = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -2240,6 +2523,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt
@@ -2400,6 +2684,10 @@ export const onUpdateUserChatRoom = /* GraphQL */ `
             nextToken
             startedAt
           }
+          Tenants {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -2514,6 +2802,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt
@@ -2674,6 +2963,10 @@ export const onDeleteUserChatRoom = /* GraphQL */ `
             nextToken
             startedAt
           }
+          Tenants {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -2788,6 +3081,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt

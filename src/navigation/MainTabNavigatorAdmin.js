@@ -17,7 +17,7 @@ const MainTabNavigatorAdmin = () => {
     <Tab.Navigator
       initialRouteName="Chats"
       screenOptions={{
-        tabBarActiveTintColor: "black",
+        tabBarActiveTintColor: "#512da8",
         tabBarStyle: { backgroundColor: "whitesmoke" },
         headerStyle: { backgroundColor: "whitesmoke" },
       }}

@@ -40,6 +40,7 @@
     "expo-media-library": "~14.2.0",
     "expo-notifications": "^0.18.1",
     "expo-permissions": "^14.1.1",
+    "expo-print": "~12.2.1",
     "expo-sharing": "11.0.1",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.4",
@@ -65,13 +66,13 @@
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
     "react-native-tab-view": "^3.5.1",
+    "react-native-toggle-element": "^2.0.1",
     "react-native-tools": "^1.0.3",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
     "react-native-webview": "^12.0.2",
     "rn-fetch-blob": "^0.12.0",
-    "uuid": "^9.0.0",
-    "expo-print": "~12.2.1"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

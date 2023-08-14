@@ -165,8 +165,8 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Text>{newToken}</Text>
-      <TextInput value={newToken} /> */}
+      <Text>{newToken}</Text>
+      <TextInput value={newToken} />
 
       {/* <TouchableOpacity onPress={editMode?handleProfilePicUpload:null}>
         <Image source={{ uri: editedProfilePic }} style={styles.image} />

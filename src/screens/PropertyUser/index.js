@@ -123,6 +123,8 @@ const PropertyUserScreen = () => {
     setEditMode(true);
   };
 
+  const handleTenancy = () => {};
+
   const handleSave = async () => {
     // Your validation logic here
     // For example, you can use regular expressions

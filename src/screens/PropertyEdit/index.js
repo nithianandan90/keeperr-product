@@ -22,7 +22,13 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { API, graphqlOperation } from "aws-amplify";
-import { createProperties, updateProperties } from "../../graphql/mutations";
+import {
+  createProperties,
+  createTenants,
+  deleteTenants,
+  updateProperties,
+  updateTenants,
+} from "../../graphql/mutations";
 import { listUsers } from "../../graphql/queries";
 
 // const userData = [
@@ -44,6 +50,8 @@ const TaskEdit = () => {
   const [physicalAccess, setPhysicalAccess] = useState(false);
   const [status, setStatus] = useState(false);
   const [userID, setUserID] = useState(false);
+  const [tenantIDs, setTenantIDs] = useState([]);
+
   const [image, setImage] = useState(false);
   const [userData, setUserData] = useState([]);
   const [sbVisible, setSbVisible] = useState(false);
@@ -51,6 +59,7 @@ const TaskEdit = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isPropertyOpen, setPropertyOpen] = useState(false);
+  const [isTenantOpen, setTenantOpen] = useState(false);
 
   const route = useRoute();
 
@@ -61,8 +70,6 @@ const TaskEdit = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    console.log("existing property", existingProperty);
-
     getUserData();
 
     if (existingProperty) {
@@ -76,6 +83,15 @@ const TaskEdit = () => {
       setState(existingProperty.state);
       setType(existingProperty.type);
       setStatus(existingProperty.status);
+
+      existingProperty.Tenants.items.map((item) => {
+        if (!item._deleted) {
+          console.log("item", item.userID);
+          setTenantIDs((k) => {
+            return k ? [...k, item.userID] : [userID];
+          });
+        }
+      });
     } else {
       clearState();
     }
@@ -100,6 +116,9 @@ const TaskEdit = () => {
     setPropertyOpen(!isPropertyOpen);
   };
 
+  const toggleTenantDropdown = () => {
+    setTenantOpen(!isTenantOpen);
+  };
   //Upload Functions
 
   const imagePicker = async () => {
@@ -176,7 +195,10 @@ const TaskEdit = () => {
       type,
       status,
       userID,
+      tenantIDs,
     ];
+
+    console.log(submitData);
 
     if (submitData.some((k) => k === "")) {
       setSbVisible(true);
@@ -201,6 +223,33 @@ const TaskEdit = () => {
     let propertyID = "";
 
     if (existingProperty) {
+      //create if not there, update if there
+      if (existingProperty.Tenants.items.length > 0) {
+        existingProperty.Tenants.items.map(async (item) => {
+          if (item) {
+            await API.graphql(
+              graphqlOperation(deleteTenants, {
+                input: { id: item.id, _version: item._version },
+              })
+            );
+          }
+        });
+      }
+
+      if (tenantIDs.length > 0) {
+        tenantIDs.map(async (item) => {
+          await API.graphql(
+            graphqlOperation(createTenants, {
+              input: {
+                propertiesID: existingProperty.id,
+                userID: item,
+                active: true,
+              },
+            })
+          );
+        });
+      }
+
       const updatedProperty = await API.graphql(
         graphqlOperation(updateProperties, {
           input: {
@@ -211,18 +260,24 @@ const TaskEdit = () => {
         })
       );
 
-      // if(latestUpdate){
-      //   const taskUpdate = await API.graphql(
-
-      //     graphqlOperation(createNotifications, {input:{taskID: existingTask.id, updateDetails: latestUpdate}}))
-      // }
-
       propertyID = existingProperty.id;
     } else {
       const returnedNewProperty = await API.graphql(
         graphqlOperation(createProperties, { input: newProperty })
       );
       propertyID = returnedNewProperty.data.createProperties.id;
+
+      tenantIDs.map(async (item) => {
+        await API.graphql(
+          graphqlOperation(createTenants, {
+            input: {
+              propertiesID: propertyID,
+              userID: item,
+              active: true,
+            },
+          })
+        );
+      });
     }
 
     if (image) {
@@ -233,22 +288,6 @@ const TaskEdit = () => {
     clearState();
 
     navigation.navigate("Properties");
-
-    //     //for each image and document, create a new attachment
-
-    //     const imageUpload = await Promise.all (images.map(async (image)=>{
-    //       const attachment = await addAttachment(image, taskID);
-    //     }))
-
-    //     const documentUpload = await Promise.all (documents.map(async (document)=>{
-    //       const attachment = await addAttachment(document, taskID);
-    //     }));
-
-    //     setIsLoading(false);
-
-    //     // console.warn('completed');
-
-    //     // navigation.navigate('Property Details', {property})
   };
 
   if (isLoading) {
@@ -282,7 +321,7 @@ const TaskEdit = () => {
 
               <DropDownPicker
                 placeholder="Select a user"
-                items={userData}
+                items={userData.filter((k) => !tenantIDs.includes(k.value))}
                 searchable={true}
                 containerStyle={styles.dropdownContainer}
                 style={styles.dropdown}
@@ -292,6 +331,7 @@ const TaskEdit = () => {
                 setValue={setUserID}
                 open={isPropertyOpen}
                 setOpen={togglePropertyDropdown}
+                disabled={existingProperty ? true : false}
               />
 
               <Text
@@ -387,6 +427,36 @@ const TaskEdit = () => {
                   <Text>Vacant</Text>
                 </View>
               </RadioButton.Group>
+
+              {status === "TENANTED" && (
+                <>
+                  <Text
+                    style={{
+                      paddingHorizontal: 12,
+                      marginBottom: 10,
+                      fontSize: 15,
+                      marginTop: 20,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Select Tenants
+                  </Text>
+                  <DropDownPicker
+                    multiple={true}
+                    placeholder="Select a user"
+                    items={userData.filter((k) => k.value !== userID)}
+                    searchable={true}
+                    containerStyle={styles.dropdownContainer}
+                    style={styles.dropdown}
+                    itemStyle={styles.dropdownItem}
+                    dropDownStyle={styles.dropdown}
+                    value={tenantIDs}
+                    setValue={setTenantIDs}
+                    open={isTenantOpen}
+                    setOpen={toggleTenantDropdown}
+                  />
+                </>
+              )}
 
               <TextInput
                 placeholder="Title*"

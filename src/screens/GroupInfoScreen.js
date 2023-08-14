@@ -12,33 +12,31 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { API, graphqlOperation } from "aws-amplify";
 import { onUpdateChatRoom } from "../graphql/subscriptions";
-import { deleteUserChatRoom } from '../graphql/mutations';
+import { deleteUserChatRoom } from "../graphql/mutations";
 import ContactListItem from "../components/ContactListItem";
-
-
 
 const ChatRoomInfo = () => {
   const [chatRoom, setChatRoom] = useState(null);
   const [loading, setLoading] = useState(false);
   const route = useRoute();
-  const navigation  = useNavigation();
-
+  const navigation = useNavigation();
 
   const chatroomId = route.params.id;
 
   const fetchChatRoom = async () => {
-
     setLoading(true);
 
-    const result = await API.graphql(graphqlOperation(getChatRoom, { id: chatroomId }));
+    const result = await API.graphql(
+      graphqlOperation(getChatRoom, { id: chatroomId })
+    );
     setChatRoom(result.data?.getChatRoom);
-      
-    setLoading(false);
 
-  }
+    console.log("result", result.data.getChatRoom);
+
+    setLoading(false);
+  };
 
   useEffect(() => {
- 
     fetchChatRoom();
 
     // Subscribe to onUpdateChatRoom
@@ -60,65 +58,62 @@ const ChatRoomInfo = () => {
     return () => subscription.unsubscribe();
   }, [chatroomId]);
 
-
   const removeChatRoomUser = async (chatRoomUser) => {
     const result = await API.graphql(
-      graphqlOperation(deleteUserChatRoom, {input: {_version: chatRoomUser._version, id: chatRoomUser.id},
+      graphqlOperation(deleteUserChatRoom, {
+        input: { _version: chatRoomUser._version, id: chatRoomUser.id },
       })
-    )
-    
-  }
-
+    );
+  };
 
   const onContactPress = (chatRoomUser) => {
-    Alert.alert("Removing the user", 
-                `Are you sure you want to remove ${chatRoomUser.user.name} from this group`,
-                [{
-                    text: 'Cancel',
-                    style: "cancel"
-                },
-                {
-                    text: 'Remove',
-                    style: "destructive",
-                    onPress: ()=>removeChatRoomUser(chatRoomUser)
-                }]
-    )
-  }
+    Alert.alert(
+      "Removing the user",
+      `Are you sure you want to remove ${chatRoomUser.user.name} from this group`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Remove",
+          style: "destructive",
+          onPress: () => removeChatRoomUser(chatRoomUser),
+        },
+      ]
+    );
+  };
 
-
-  const onPress = () =>{
-    
+  const onPress = () => {
     const property = chatRoom.Property;
 
-    
-    navigation.navigate('Property Details', {property})
-  }
-
+    navigation.navigate("Property Details", { property });
+  };
 
   if (!chatRoom) {
-    return <ActivityIndicator color={'#512da8'}/>;
+    return <ActivityIndicator color={"#512da8"} />;
   }
 
   const users = chatRoom.users.items.filter((item) => !item._deleted);
 
-  
   return (
     <View style={styles.container}>
-      <Pressable onPress={onPress} android_ripple={{radius:200}}>
+      <Pressable onPress={onPress} android_ripple={{ radius: 200 }}>
         <Text style={styles.title}>{chatRoom.Property.title}</Text>
+        <Text style={styles.subTitle}>{chatRoom.Property.streetAddress}</Text>
         <Text style={styles.subTitle}>
-            {chatRoom.Property.streetAddress}
-          </Text>
-          <Text style={styles.subTitle}>
           {chatRoom.Property.postcode}, {chatRoom.Property.state}
-          </Text>
-      </Pressable>
-      
-      
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems:'center'}}>
-        <Text style={styles.sectionTitle}>
-          {users.length} Participants
         </Text>
+      </Pressable>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.sectionTitle}>{users.length} Participants</Text>
         {/* <Text onPress={()=>navigation.navigate("Add Contacts", {chatRoom})} style={{fontWeight: "bold", color: "royalblue"}}>Invite Users</Text> */}
       </View>
       <View style={styles.section}>
@@ -127,7 +122,7 @@ const ChatRoomInfo = () => {
           renderItem={({ item }) => (
             <ContactListItem
               user={item.user}
-              onPress={()=>onContactPress(item)}
+              onPress={() => onContactPress(item)}
             />
           )}
           onRefresh={fetchChatRoom}
@@ -150,7 +145,6 @@ const styles = StyleSheet.create({
   subTitle: {
     fontWeight: "bold",
     fontSize: 14,
-
   },
   sectionTitle: {
     fontWeight: "bold",
@@ -170,7 +164,7 @@ export const getChatRoom = /* GraphQL */ `
       id
       name
       updatedAt
-      Property{
+      Property {
         streetAddress
         title
         postcode
@@ -184,8 +178,16 @@ export const getChatRoom = /* GraphQL */ `
         createdAt
         city
         usersID
-        Attachments{
-          items{
+        Tenants {
+          items {
+            id
+            userID
+            _version
+            _deleted
+          }
+        }
+        Attachments {
+          items {
             _deleted
             width
             _lastChangedAt

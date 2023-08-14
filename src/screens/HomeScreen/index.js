@@ -13,14 +13,18 @@ import { listProperties } from "./queries";
 import { useAuthContext } from "../../context/AuthContext";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import ToggleButtonExample from "../../components/ToggleButton";
+import { listTenants } from "../../graphql/queries";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
 
   const [properties, setProperties] = useState([]);
+  const [tenantedProperties, setTenantedProperties] = useState([]);
   const [tasks, setTasks] = useState([]);
   const { dbUser } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [toggleValue, setToggleValue] = useState(false);
 
   const admin = ["MANAGER", "PARTNER"];
 
@@ -28,7 +32,9 @@ const HomeScreen = () => {
 
   const isFocused = useIsFocused();
   useEffect(() => {
+    setTenantedProperties([]);
     getResult();
+    getTenanted();
     if (adminChecker) {
       navigation.setOptions({
         headerRight: () => (
@@ -94,6 +100,38 @@ const HomeScreen = () => {
     setIsLoading(false);
   };
 
+  const getTenanted = async () => {
+    let tenantedProperties = [];
+
+    const tenanted = await API.graphql(
+      graphqlOperation(listTenants, { filter: { userID: { eq: dbUser.id } } })
+    );
+
+    tenanted.data.listTenants.items.map((item) => {
+      if (!item._deleted) {
+        tenantedProperties.push(item.propertiesID);
+        console.log(item.propertiesID);
+      }
+    });
+
+    // console.log("tenanted", tenanted.data.listTenants.items);
+
+    let orArray = [];
+    tenanted.data.listTenants.items.map((item) => {
+      if (!item._deleted) {
+        orArray.push({ id: { eq: item.propertiesID } });
+      }
+    });
+
+    if (orArray.length > 0) {
+      const results = await API.graphql(
+        graphqlOperation(listProperties, { filter: { or: orArray } })
+      );
+
+      setTenantedProperties(results.data.listProperties.items);
+    }
+  };
+
   //  useEffect(()=>{
   //     getResult().then((result)=>{console.log(jsonFormat(result)); setProperties(result)});
 
@@ -111,8 +149,16 @@ const HomeScreen = () => {
 
   return (
     <View style={{ flex: 1, width: "100%" }}>
+      <View style={{ alignItems: "center" }}>
+        {!adminChecker && (
+          <ToggleButtonExample
+            toggleValue={toggleValue}
+            setToggleValue={setToggleValue}
+          />
+        )}
+      </View>
       <FlatList
-        data={properties}
+        data={!toggleValue ? properties : tenantedProperties}
         renderItem={({ item }) => {
           return <FacilitiesItem property={item} />;
         }}

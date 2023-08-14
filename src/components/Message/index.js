@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import ImageAttachment from "./ImageAttachment";
 import VideoAttachment from "./VideoAttachment";
 import { getUser } from "../../graphql/queries";
+import { useAuthContext } from "../../context/AuthContext";
 
 dayjs.extend(relativeTime);
 
@@ -22,6 +23,8 @@ const Message = ({ message, managers }) => {
   const { width } = useWindowDimensions();
   const [userType, setUserType] = useState("");
   const [userName, setUserName] = useState("");
+
+  const { dbUser } = useAuthContext();
 
   useEffect(() => {
     managers.map((manager) => {
@@ -71,7 +74,7 @@ const Message = ({ message, managers }) => {
   const isMyMessage = async () => {
     const authUser = await Auth.currentAuthenticatedUser();
 
-    setIsMe(message.userID === authUser.attributes.sub);
+    setIsMe(message.userID === dbUser.id);
   };
 
   const imageAttachments = downloadedAttachments.filter(

@@ -11,11 +11,13 @@ import TaskListItem from "../../components/taskItem";
 import { API, graphqlOperation } from "aws-amplify";
 import GoToChat from "../../components/GoToChat";
 import { useAuthContext } from "../../context/AuthContext";
-import { listTasksByProperty } from "../../graphql/queries";
+import { listTasksByProperty, listTenants } from "../../graphql/queries";
 
 const PropertyDetailsScreen = () => {
   const route = useRoute();
 
+  const [tenancyStatus, setTenancyStatus] = useState();
+  const [tenantTasks, setTenantTasks] = useState();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +37,9 @@ const PropertyDetailsScreen = () => {
 
   useEffect(() => {
     getPropertyTasks();
+    getTenancyStatus();
 
+    console.log(adminChecker);
     if (adminChecker) {
       navigation.setOptions({
         headerRight: () => (
@@ -68,8 +72,22 @@ const PropertyDetailsScreen = () => {
     }
   }, [isFocused]);
 
+  const getTenancyStatus = async () => {};
+
   const getPropertyTasks = async () => {
     setLoading(true);
+
+    const tenancyResults = await API.graphql(
+      graphqlOperation(listTenants, {
+        filter: { propertiesID: { eq: route.params.property.id } },
+      })
+    );
+
+    tenancyResults.data.listTenants.items.map((item) => {
+      if (!item._deleted && item.userID === dbUser.id) {
+        setTenancyStatus(item);
+      }
+    });
 
     // const result = await API.graphql(
     //     graphqlOperation(listTasks, {filter:{propertiesID:{eq: route.params.property.id}}})
@@ -98,7 +116,11 @@ const PropertyDetailsScreen = () => {
         ListHeaderComponent={() => <Header property={route.params.property} />}
         data={tasks}
         renderItem={({ item }) => (
-          <TaskListItem task={item} property={route.params.property} />
+          <TaskListItem
+            task={item}
+            property={route.params.property}
+            tenancyStatus={tenancyStatus}
+          />
         )}
         keyExtractor={(item) => item.id}
       />

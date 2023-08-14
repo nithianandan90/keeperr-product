@@ -197,6 +197,22 @@ export const schema = {
                         ]
                     }
                 },
+                "Tenants": {
+                    "name": "Tenants",
+                    "isArray": true,
+                    "type": {
+                        "model": "Tenants"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "propertiesID"
+                        ]
+                    }
+                },
                 "Attachments": {
                     "name": "Attachments",
                     "isArray": true,
@@ -344,6 +360,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "ownerOnly": {
+                    "name": "ownerOnly",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "propertiesID": {
                     "name": "propertiesID",
                     "isArray": false,
@@ -357,6 +380,22 @@ export const schema = {
                     "type": "ID",
                     "isRequired": false,
                     "attributes": []
+                },
+                "TenantTasks": {
+                    "name": "TenantTasks",
+                    "isArray": true,
+                    "type": {
+                        "model": "TenantTasks"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "taskID"
+                        ]
+                    }
                 },
                 "Attachments": {
                     "name": "Attachments",
@@ -598,8 +637,10 @@ export const schema = {
                     "type": "key",
                     "properties": {
                         "name": "byInvoices",
+                        "queryField": "listAttachmentsByInvoice",
                         "fields": [
-                            "invoiceID"
+                            "invoiceID",
+                            "createdAt"
                         ]
                     }
                 },
@@ -1399,6 +1440,170 @@ export const schema = {
                 }
             ]
         },
+        "Tenants": {
+            "name": "Tenants",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "propertiesID": {
+                    "name": "propertiesID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "active": {
+                    "name": "active",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Tenants",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byProperties",
+                        "fields": [
+                            "propertiesID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "TenantTasks": {
+            "name": "TenantTasks",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "taskID": {
+                    "name": "taskID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "active": {
+                    "name": "active",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "TenantTasks",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTask",
+                        "fields": [
+                            "taskID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "UserChatRoom": {
             "name": "UserChatRoom",
             "fields": {
@@ -1526,5 +1731,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.2",
-    "version": "93312ef2c550e3a753f4af6f8e5a601f"
+    "version": "688796365cbe71840de65f80e274fd25"
 };

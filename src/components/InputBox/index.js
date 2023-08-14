@@ -186,8 +186,6 @@ const InputBox = ({ chatroom }) => {
 
       const propertyData = chatRoomData.data.updateChatRoom.Property;
 
-      console.log("users", chatRoomUsers);
-
       const notificationData = {
         notification: {
           title: propertyData.title,
@@ -199,12 +197,23 @@ const InputBox = ({ chatroom }) => {
       };
 
       const orArray = chatRoomUsers.map((item) => {
+        // console.log("id", item.user.id);
         return { usersID: { eq: item.user.id } };
       });
 
       const fireBaseTokenArray = await API.graphql(
-        graphqlOperation(listFirebaseTokens, { filter: { or: orArray } })
+        graphqlOperation(listFirebaseTokens, {
+          filter: { or: orArray },
+          limit: 1000,
+          scanIndexForward: true,
+        })
       );
+
+      fireBaseTokenArray.data.listFirebaseTokens.items.map((item) => {
+        if (!item._deleted) {
+          console.log("token", item.token);
+        }
+      });
 
       const fetchedTokens =
         fireBaseTokenArray.data.listFirebaseTokens.items.filter(

@@ -30,6 +30,7 @@ const InvoiceScreen = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
     getInvoiceFile(invoice.id).then((k) => {
       setUri(k);
       setIsLoading(false);

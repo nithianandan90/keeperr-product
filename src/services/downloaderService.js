@@ -15,6 +15,8 @@ export const getInvoiceFile = async (invoiceID) => {
 
   const attachment = results.data.listAttachments.items[0];
 
+  console.log("attachments", results.data);
+
   if (!attachment) {
     return;
   }

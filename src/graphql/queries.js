@@ -165,8 +165,13 @@ export const getProperties = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -175,6 +180,21 @@ export const getProperties = /* GraphQL */ `
             nextToken
             startedAt
           }
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      Tenants {
+        items {
+          id
+          propertiesID
+          userID
+          active
+          createdAt
           updatedAt
           _version
           _deleted
@@ -246,8 +266,24 @@ export const listProperties = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -328,8 +364,24 @@ export const syncProperties = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -412,8 +464,24 @@ export const propertiesByUsersID = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -470,8 +538,24 @@ export const getTask = /* GraphQL */ `
       taskType
       recurrence
       active
+      ownerOnly
       propertiesID
       usersID
+      TenantTasks {
+        items {
+          id
+          taskID
+          userID
+          active
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Attachments {
         items {
           id
@@ -536,8 +620,24 @@ export const listTasks = /* GraphQL */ `
         taskType
         recurrence
         active
+        ownerOnly
         propertiesID
         usersID
+        TenantTasks {
+          items {
+            id
+            taskID
+            userID
+            active
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         Attachments {
           items {
             id
@@ -611,8 +711,24 @@ export const syncTasks = /* GraphQL */ `
         taskType
         recurrence
         active
+        ownerOnly
         propertiesID
         usersID
+        TenantTasks {
+          items {
+            id
+            taskID
+            userID
+            active
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         Attachments {
           items {
             id
@@ -690,8 +806,24 @@ export const listTasksByProperty = /* GraphQL */ `
         taskType
         recurrence
         active
+        ownerOnly
         propertiesID
         usersID
+        TenantTasks {
+          items {
+            id
+            taskID
+            userID
+            active
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         Attachments {
           items {
             id
@@ -767,8 +899,24 @@ export const tasksByUsersID = /* GraphQL */ `
         taskType
         recurrence
         active
+        ownerOnly
         propertiesID
         usersID
+        TenantTasks {
+          items {
+            id
+            taskID
+            userID
+            active
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         Attachments {
           items {
             id
@@ -1067,16 +1215,18 @@ export const attachmentsByPropertiesID = /* GraphQL */ `
     }
   }
 `;
-export const attachmentsByInvoiceID = /* GraphQL */ `
-  query AttachmentsByInvoiceID(
+export const listAttachmentsByInvoice = /* GraphQL */ `
+  query ListAttachmentsByInvoice(
     $invoiceID: ID!
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelAttachmentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    attachmentsByInvoiceID(
+    listAttachmentsByInvoice(
       invoiceID: $invoiceID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1199,8 +1349,24 @@ export const getChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
+        Tenants {
+          items {
+            id
+            propertiesID
+            userID
+            active
+            createdAt
             updatedAt
             _version
             _deleted
@@ -1364,6 +1530,10 @@ export const listChatRooms = /* GraphQL */ `
             nextToken
             startedAt
           }
+          Tenants {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -1487,6 +1657,10 @@ export const syncChatRooms = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -1891,8 +2065,13 @@ export const getUser = /* GraphQL */ `
           taskType
           recurrence
           active
+          ownerOnly
           propertiesID
           usersID
+          TenantTasks {
+            nextToken
+            startedAt
+          }
           Attachments {
             nextToken
             startedAt
@@ -1939,6 +2118,10 @@ export const getUser = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -2070,6 +2253,7 @@ export const listUsers = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt
@@ -2238,6 +2422,7 @@ export const syncUsers = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt
@@ -2410,6 +2595,7 @@ export const listUsersByDate = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt
@@ -2898,6 +3084,202 @@ export const firebaseTokensByUsersID = /* GraphQL */ `
     }
   }
 `;
+export const getTenants = /* GraphQL */ `
+  query GetTenants($id: ID!) {
+    getTenants(id: $id) {
+      id
+      propertiesID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listTenants = /* GraphQL */ `
+  query ListTenants(
+    $filter: ModelTenantsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTenants(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        propertiesID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTenants = /* GraphQL */ `
+  query SyncTenants(
+    $filter: ModelTenantsFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTenants(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        propertiesID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const tenantsByPropertiesID = /* GraphQL */ `
+  query TenantsByPropertiesID(
+    $propertiesID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTenantsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tenantsByPropertiesID(
+      propertiesID: $propertiesID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        propertiesID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getTenantTasks = /* GraphQL */ `
+  query GetTenantTasks($id: ID!) {
+    getTenantTasks(id: $id) {
+      id
+      taskID
+      userID
+      active
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listTenantTasks = /* GraphQL */ `
+  query ListTenantTasks(
+    $filter: ModelTenantTasksFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTenantTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        taskID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTenantTasks = /* GraphQL */ `
+  query SyncTenantTasks(
+    $filter: ModelTenantTasksFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTenantTasks(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        taskID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const tenantTasksByTaskID = /* GraphQL */ `
+  query TenantTasksByTaskID(
+    $taskID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTenantTasksFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tenantTasksByTaskID(
+      taskID: $taskID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        taskID
+        userID
+        active
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getUserChatRoom = /* GraphQL */ `
   query GetUserChatRoom($id: ID!) {
     getUserChatRoom(id: $id) {
@@ -2951,6 +3333,10 @@ export const getUserChatRoom = /* GraphQL */ `
           status
           active
           Tasks {
+            nextToken
+            startedAt
+          }
+          Tenants {
             nextToken
             startedAt
           }
@@ -3068,6 +3454,7 @@ export const getUserChatRoom = /* GraphQL */ `
             taskType
             recurrence
             active
+            ownerOnly
             propertiesID
             usersID
             updatedAt

@@ -162,6 +162,22 @@ const AuthContextProvider = ({ children }) => {
           })
         );
 
+        //if same token exists delete token
+
+        if (userData.data.getUser.FirebaseTokens.items.length > 0) {
+          userData.data.getUser.FirebaseTokens.items.map(async (item) => {
+            if (token === item.token) {
+              const deleteTokens = await API.graphql(
+                graphqlOperation(deleteFirebaseTokens, {
+                  input: { id: item.id, _version: item._version },
+                })
+              );
+            }
+          });
+        }
+
+        //create new token
+
         const createToken = await API.graphql(
           graphqlOperation(createFirebaseTokens, {
             input: {
@@ -265,14 +281,18 @@ const AuthContextProvider = ({ children }) => {
       })
     );
 
-    // 20/07/23 delete from tokens table when user sign out
-    if (createdToken) {
-      const deleteTokens = await API.graphql(
-        graphqlOperation(deleteFirebaseTokens, {
-          input: { id: createdToken.id, _version: createdToken._version },
-        })
-      );
-    }
+    const token = await firebaseMessaging().getToken();
+    // 01/08/23 delete from tokens table when user sign out
+    updatedUser.data.updateUser.FirebaseTokens.items.map(async (item) => {
+      if (token === item.token) {
+        console.log(item.id, item._version, item.token);
+        const deleteTokens = await API.graphql(
+          graphqlOperation(deleteFirebaseTokens, {
+            input: { id: item.id, _version: item._version },
+          })
+        );
+      }
+    });
 
     console.log("signout user", updatedUser);
     Auth.signOut();

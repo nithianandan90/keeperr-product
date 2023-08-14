@@ -17,7 +17,7 @@ export const listProperties = /* GraphQL */ `
         physicalAccess
         status
         usersID
-       
+
         Tasks {
           nextToken
           startedAt
@@ -33,6 +33,18 @@ export const listProperties = /* GraphQL */ `
           items {
             storageKey
             fileName
+          }
+        }
+        Tenants {
+          nextToken
+          startedAt
+          items {
+            id
+            propertiesID
+            userID
+            active
+            _version
+            _deleted
           }
         }
         createdAt

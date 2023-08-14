@@ -16,14 +16,29 @@ import {
   pickDocument,
   addAttachment,
 } from "../../services/uploaderService";
-import { Button, Chip, List, RadioButton, Snackbar } from "react-native-paper";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  Button,
+  Chip,
+  List,
+  RadioButton,
+  Snackbar,
+  Switch,
+} from "react-native-paper";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { API, graphqlOperation } from "aws-amplify";
 import {
   createNotifications,
   createTask,
+  createTenantTasks,
+  deleteTenantTasks,
   updateTask,
 } from "../../graphql/mutations";
+import { listUsers } from "../../graphql/queries";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const propertyData = [
   { label: "Property 1", value: "Property 1" },
@@ -43,9 +58,6 @@ const TaskEdit = () => {
   const [endDate, setEndDate] = useState("");
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
-  const [isPropertyOpen, setPropertyOpen] = useState(false);
-  const [isStatusOpen, setStatusOpen] = useState(false);
-  const [isTypeOpen, setTypeOpen] = useState(false);
 
   const [startMode, setStartMode] = useState("date");
   const [startShow, setStartShow] = useState(false);
@@ -58,6 +70,12 @@ const TaskEdit = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [latestUpdate, setLatestUpdate] = useState("");
 
+  const [ownerOnly, setOwnerOnly] = useState(false);
+
+  const [tenantIDs, setTenantIDs] = useState([]);
+  const [isTenantOpen, setTenantOpen] = useState(false);
+  const [userData, setUserData] = useState([]);
+
   const route = useRoute();
 
   const navigation = useNavigation();
@@ -66,12 +84,16 @@ const TaskEdit = () => {
 
   const property = route.params.property;
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     // setProperty(route.params.property)
+    getTenantData();
 
     if (existingTask) {
       navigation.setOptions({ title: "Edit Task" });
 
+      setOwnerOnly(existingTask.ownerOnly);
       setStatus(existingTask.status);
       setType(existingTask.taskType);
       setRecurrence(existingTask.recurrence);
@@ -80,7 +102,15 @@ const TaskEdit = () => {
       setTitle(existingTask.title);
       setSubTitle(existingTask.subTitle);
     }
-  }, [existingTask, property]);
+
+    existingTask.TenantTasks.items.map((item) => {
+      if (!item._deleted) {
+        setTenantIDs((k) => {
+          return k ? [...k, item.userID] : [userID];
+        });
+      }
+    });
+  }, [existingTask, property, isFocused]);
 
   const onStartDateChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -178,6 +208,29 @@ const TaskEdit = () => {
     );
   };
 
+  const getTenantData = async () => {
+    setUserData([]);
+    setIsLoading(true);
+    const results = await API.graphql(graphqlOperation(listUsers));
+    const fetchedUsers = results.data.listUsers.items.filter(
+      (k) => !k._deleted
+    );
+
+    const data = fetchedUsers.map((item) => {
+      property.Tenants.items.map((i) => {
+        if (i.userID === item.id && !i._deleted) {
+          setUserData((k) => [...k, { label: item.email, value: item.id }]);
+        }
+      });
+    });
+
+    setIsLoading(false);
+  };
+
+  const toggleTenantDropdown = () => {
+    setTenantOpen(!isTenantOpen);
+  };
+
   const handleSubmit = async () => {
     // Perform form submission logic here
     // You can access the form values from the component's state
@@ -207,6 +260,7 @@ const TaskEdit = () => {
       subTitle: subTitle,
       taskType: type,
       active: true,
+      ownerOnly: ownerOnly,
       recurrence: recurrence,
       startDate: startDate ? startDate : null,
       completionDate: endDate ? endDate : null,
@@ -242,6 +296,35 @@ const TaskEdit = () => {
       }
 
       taskID = existingTask.id;
+
+      //create if not there, update if there
+
+      console.log(existingTask.TenantTasks.items);
+      if (existingTask.TenantTasks.items.length > 0) {
+        existingTask.TenantTasks.items.map(async (item) => {
+          if (item) {
+            await API.graphql(
+              graphqlOperation(deleteTenantTasks, {
+                input: { id: item.id, _version: item._version },
+              })
+            );
+          }
+        });
+      }
+
+      if (tenantIDs.length > 0) {
+        tenantIDs.map(async (item) => {
+          await API.graphql(
+            graphqlOperation(createTenantTasks, {
+              input: {
+                taskID: existingTask.id,
+                userID: item,
+                active: true,
+              },
+            })
+          );
+        });
+      }
     } else {
       const returnedNewTask = await API.graphql(
         graphqlOperation(createTask, { input: newTask })
@@ -257,6 +340,18 @@ const TaskEdit = () => {
           },
         })
       );
+
+      tenantIDs.map(async (item) => {
+        await API.graphql(
+          graphqlOperation(createTenantTasks, {
+            input: {
+              taskID: taskID,
+              userID: item,
+              active: true,
+            },
+          })
+        );
+      });
     }
 
     //for each image and document, create a new attachment
@@ -298,38 +393,48 @@ const TaskEdit = () => {
           </Text>
         )}
 
-        {/* Only show if new task not update task */}
-        {/* <DropDownPicker
-        placeholder="Select a property"
-        items={propertyData}
-        searchable={true}
-        containerStyle={styles.dropdownContainer}
-        style={styles.dropdown}
-        itemStyle={styles.dropdownItem}
-        dropDownStyle={styles.dropdown}
-        value={property}
-        setValue={setProperty}
-        open={isPropertyOpen}
-        setOpen={togglePropertyDropdown}
-        
-      /> */}
+        <View style={{ margin: 15 }}>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ fontWeight: "600" }}>Owner Only </Text>
+            <Switch
+              value={ownerOnly}
+              onValueChange={() => {
+                setOwnerOnly(!ownerOnly);
+                setTenantIDs([]);
+              }}
+            />
+          </View>
+        </View>
 
-        {/* <DropDownPicker
-        placeholder="Select a status"
-        items={[
-          { label: 'TO COMMENCE', value: 'TO COMMENCE' },
-          { label: 'ONGOING', value: 'ONGOING' },
-          { label: 'COMPLETED', value: 'COMPLETED' },
-        ]}
-        value={status}
-        containerStyle={styles.dropdownContainer}
-        style={styles.dropdown}
-        itemStyle={styles.dropdownItem}
-        dropDownStyle={styles.dropdown}
-        setValue={setStatus}
-        open={isStatusOpen}
-        setOpen={toggleStatusDropdown}
-      /> */}
+        {!ownerOnly && (
+          <>
+            <Text
+              style={{
+                paddingHorizontal: 12,
+                marginBottom: 10,
+                fontSize: 15,
+                marginTop: 20,
+                fontWeight: "600",
+              }}
+            >
+              Select Tenants
+            </Text>
+            <DropDownPicker
+              multiple={true}
+              placeholder="Select a user"
+              items={userData.filter((k) => k !== property.usersID)}
+              searchable={true}
+              containerStyle={styles.dropdownContainer}
+              style={styles.dropdown}
+              itemStyle={styles.dropdownItem}
+              dropDownStyle={styles.dropdown}
+              value={tenantIDs}
+              setValue={setTenantIDs}
+              open={isTenantOpen}
+              setOpen={toggleTenantDropdown}
+            />
+          </>
+        )}
 
         <Text
           style={{
@@ -738,6 +843,22 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     height: 40,
     marginBottom: 16,
+  },
+  dropdown: {
+    backgroundColor: "#fff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 4,
+    zIndex: 0,
+  },
+  dropdownItem: {
+    justifyContent: "flex-start",
+    zIndex: 1,
+  },
+  dropdownContainer: {
+    height: 40,
+    marginBottom: 16,
+    zIndex: 2,
   },
   dropdown: {
     backgroundColor: "#fff",

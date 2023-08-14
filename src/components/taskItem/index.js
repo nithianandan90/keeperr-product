@@ -1,41 +1,68 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import {List} from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { iconStyler } from '../../services/styler';
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { List } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { iconStyler } from "../../services/styler";
+import { useAuthContext } from "../../context/AuthContext";
 
+const TaskListItem = ({ task, property }) => {
+  const { dbUser } = useAuthContext();
 
- 
-
-
-const TaskListItem = ({task, property}) => {
-
-  
   const navigation = useNavigation();
-  const onPress=()=>{
-    navigation.navigate('Task Details', {task:task, property:property});
+
+  const admin = ["MANAGER", "PARTNER"];
+
+  const adminChecker = admin.some((k) => k === dbUser?.userType);
+
+  const onPress = () => {
+    navigation.navigate("Task Details", { task: task, property: property });
+  };
+
+  console.log("task", task.TenantTasks.items);
+
+  if (!adminChecker) {
+    let checker = false;
+    task.TenantTasks.items.map((i) => {
+      if (!i._deleted) {
+        if (i.userID === dbUser.id) {
+          checker = true;
+        }
+      }
+    });
+
+    if (!checker) {
+      return;
     }
-  
-
-
-    return(
-        <Pressable onPress={onPress} android_ripple={{radius:200}}>
-         
-        <List.Item
-            title={task.title}
-            description= {task.subTitle}
-            left={() => <List.Icon icon={({color})=>iconStyler(task.taskType, 24, color)} />}
-            style={{paddingLeft: 10, borderBottomColor: '#cccccc', borderBottomWidth:1}}
-            right={() => <View><Text>{task.status}</Text></View>}
-            />
-        </Pressable>
+  }
+  return (
+    <Pressable onPress={onPress} android_ripple={{ radius: 200 }}>
+      <List.Item
+        title={task.title}
+        description={task.subTitle}
+        left={() => (
+          <List.Icon
+            icon={({ color }) => iconStyler(task.taskType, 24, color)}
+          />
+        )}
+        style={{
+          paddingLeft: 10,
+          borderBottomColor: "#cccccc",
+          borderBottomWidth: 1,
+        }}
+        right={() => (
+          <View>
+            <Text>{task.status}</Text>
+          </View>
+        )}
+      />
+    </Pressable>
 
     // <Pressable onPress = {onPress} style = {styles.restaurantContainer}>
-    //     <Image 
+    //     <Image
     //         source = {{
     //             uri: facility.image.startsWith('http') ? facility.image : DEFAULT_IMAGE
-    //             }} 
+    //             }}
     //         style = {styles.image}/>
-    //     <View style={styles.row}> 
+    //     <View style={styles.row}>
     //         <View>
     //             <Text style = {styles.title}>{facility.name}</Text>
     //         </View>
@@ -48,42 +75,37 @@ const TaskListItem = ({task, property}) => {
   );
 };
 
-
 export default TaskListItem;
 
 const styles = StyleSheet.create({
-    restaurantContainer: {
-      width: '100%',
-      marginVertical: 10 
-    },
-    image: {
-      width: '100%',
-      aspectRatio: 5/3,
-      marginBottom: 5
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginVertical: 5
-    },
-    subtitle: {
-      color: 'gray',
-  
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center'
-
-    },
-    rating: {
-        marginLeft: "auto",
-        backgroundColor: 'lightgray',
-        width: 30,
-        height: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20
-         
-    }
-  });
-  
+  restaurantContainer: {
+    width: "100%",
+    marginVertical: 10,
+  },
+  image: {
+    width: "100%",
+    aspectRatio: 5 / 3,
+    marginBottom: 5,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 5,
+  },
+  subtitle: {
+    color: "gray",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  rating: {
+    marginLeft: "auto",
+    backgroundColor: "lightgray",
+    width: 30,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+  },
+});
